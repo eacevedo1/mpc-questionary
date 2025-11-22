@@ -1,6 +1,6 @@
 // Configuration - Replace with your Google Apps Script Web App URL
 // See README.md for setup instructions
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxiXrKmv-EfM-wOFYIoVmfaOTZhz5gSXJSC_VZvOwB61_-4nG3uOSrsX2eS3RG3lErx/exec';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbz2tGgPpsfQcm0LU9cIY4EFCOVETqO7xPeTwjg1agTxmTD2TxlCBTDQAMK8y1ZpWmS1/exec';
 
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('questionnaireForm');
