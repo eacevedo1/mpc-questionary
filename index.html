@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="questionnaire-wrapper">
+            <h1>Questionnaire</h1>
+            <p class="subtitle">Please fill out the following questions</p>
+            
+            <form id="questionnaireForm">
+                <!-- Question 1: Text input -->
+                <div class="form-group">
+                    <label for="name">What is your name?</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <!-- Question 2: Email -->
+                <div class="form-group">
+                    <label for="email">What is your email?</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <!-- Question 3: Multiple choice (Radio) -->
+                <div class="form-group">
+                    <label>How satisfied are you with our service?</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="satisfaction" value="Very Satisfied" required>
+                            Very Satisfied
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="satisfaction" value="Satisfied">
+                            Satisfied
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="satisfaction" value="Neutral">
+                            Neutral
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="satisfaction" value="Dissatisfied">
+                            Dissatisfied
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="satisfaction" value="Very Dissatisfied">
+                            Very Dissatisfied
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 4: Checkboxes -->
+                <div class="form-group">
+                    <label>Which features do you use? (Select all that apply)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="features" value="Feature A">
+                            Feature A
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="features" value="Feature B">
+                            Feature B
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="features" value="Feature C">
+                            Feature C
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="features" value="Feature D">
+                            Feature D
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 5: Textarea -->
+                <div class="form-group">
+                    <label for="feedback">Additional comments or feedback:</label>
+                    <textarea id="feedback" name="feedback" rows="4"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="success-message hidden">
+                <p>✓ Thank you! Your response has been submitted successfully.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
