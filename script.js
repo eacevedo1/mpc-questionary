@@ -136,9 +136,15 @@ function validateForm(form) {
 }
 
 function saveDemographicsData() {
-    formData.name = document.getElementById('name').value;
-    formData.email = document.getElementById('email').value;
     formData.age = document.getElementById('age').value;
+    formData.country = document.getElementById('country').value;
+    formData.gender = document.querySelector('input[name="gender"]:checked').value;
+    formData.musicalTraining = document.querySelector('input[name="musicalTraining"]:checked').value;
+    formData.instruments = document.getElementById('instruments').value;
+    formData.musicFrequency = document.querySelector('input[name="musicFrequency"]:checked').value;
+    formData.happyBirthdayFamiliarity = document.querySelector('input[name="happyBirthdayFamiliarity"]:checked').value;
+    formData.pitchTestExperience = document.querySelector('input[name="pitchTestExperience"]:checked').value;
+    formData.headphones = document.querySelector('input[name="headphones"]:checked').value;
 }
 
 function saveSectionData(pageId, form) {
@@ -199,15 +205,19 @@ function submitAllData() {
     // Prepare data for Google Sheets
     const submissionData = {
         timestamp: formData.timestamp,
-        name: formData.name,
-        email: formData.email,
         age: formData.age,
+        country: formData.country,
+        gender: formData.gender,
+        musicalTraining: formData.musicalTraining,
+        instruments: formData.instruments,
+        musicFrequency: formData.musicFrequency,
+        happyBirthdayFamiliarity: formData.happyBirthdayFamiliarity,
+        pitchTestExperience: formData.pitchTestExperience,
+        headphones: formData.headphones,
         sectionOrder: formData.sectionOrder.join(' → '),
-        satisfaction: formData.section1?.satisfaction || '',
-        features: Array.isArray(formData.section2?.features) 
-            ? formData.section2.features.join(', ') 
-            : '',
-        experience: formData.section3?.experience || '',
+        task1Response: formData.section1?.pitchResponse || '',
+        task2Response: formData.section2?.melodyResponse || '',
+        task3Response: formData.section3?.unfamiliarResponse || '',
         feedback: formData.feedback,
         completionTimestamp: formData.completionTimestamp
     };

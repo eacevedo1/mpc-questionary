@@ -277,6 +277,67 @@ textarea {
     border-radius: 8px;
 }
 
+/* Task Description */
+.task-description {
+    text-align: left;
+    margin: 24px 0;
+    padding: 20px;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.task-description p {
+    margin-bottom: 12px;
+    color: #374151;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.task-description p:last-child {
+    margin-bottom: 0;
+}
+
+.task-description ul {
+    list-style: none;
+    margin-left: 0;
+    margin: 12px 0;
+}
+
+.task-description li {
+    margin-bottom: 8px;
+    color: #4b5563;
+    line-height: 1.6;
+    padding-left: 28px;
+    position: relative;
+    font-size: 15px;
+}
+
+.task-description li:before {
+    content: "•";
+    position: absolute;
+    left: 12px;
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+/* Audio Player */
+.audio-player {
+    margin: 24px 0;
+    padding: 20px;
+    background: #ffffff;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.audio-player audio {
+    width: 100%;
+    max-width: 500px;
+}
+
 /* Select Dropdown */
 select {
     width: 100%;

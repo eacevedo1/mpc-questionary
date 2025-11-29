@@ -54,52 +54,188 @@
                 
                 <form id="demographicsForm">
                     <div class="form-group">
-                        <label for="name">What is your name?</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">What is your email?</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="age">What is your age?</label>
+                        <label for="age">1. Age</label>
                         <input type="number" id="age" name="age" min="18" max="120" required>
                     </div>
 
+                    <div class="form-group">
+                        <label for="country">2. Country</label>
+                        <input type="text" id="country" name="country" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>3. Gender</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="gender" value="Female" required>
+                                Female
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="gender" value="Male">
+                                Male
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="gender" value="Non-binary">
+                                Non-binary
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="gender" value="Prefer not to say">
+                                Prefer not to say
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>4. Years of musical training (instrument, singing, theory, bands, etc.)</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="musicalTraining" value="0" required>
+                                0
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="musicalTraining" value="1–3">
+                                1–3
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="musicalTraining" value="4–7">
+                                4–7
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="musicalTraining" value="8–12">
+                                8–12
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="musicalTraining" value="13+">
+                                13+
+                            </label>
+                        </div>
+                        <input type="text" id="instruments" name="instruments" placeholder="Optional: List instruments you play" style="margin-top: 12px;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>5. How often do you make music today?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="musicFrequency" value="Never" required>
+                                Never
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="musicFrequency" value="Occasionally">
+                                Occasionally
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="musicFrequency" value="Weekly">
+                                Weekly
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="musicFrequency" value="Several times per week">
+                                Several times per week
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="musicFrequency" value="Daily">
+                                Daily
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>6. How familiar are you with the melody "Happy Birthday"?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="happyBirthdayFamiliarity" value="Very familiar (I can sing it)" required>
+                                Very familiar (I can sing it)
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="happyBirthdayFamiliarity" value="Somewhat familiar">
+                                Somewhat familiar
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="happyBirthdayFamiliarity" value="Not very familiar">
+                                Not very familiar
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="happyBirthdayFamiliarity" value="Not familiar at all">
+                                Not familiar at all
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>7. Have you ever done a pitch-discrimination or ear-training test before?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="pitchTestExperience" value="Yes" required>
+                                Yes
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchTestExperience" value="No">
+                                No
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchTestExperience" value="Not sure">
+                                Not sure
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>8. Are you using headphones?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="headphones" value="Yes" required>
+                                Yes
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="headphones" value="No">
+                                No (please switch to headphones to continue)
+                            </label>
+                        </div>
+                    </div>
+
                     <button type="button" class="nav-btn next-btn">Next</button>
                 </form>
             </div>
 
-            <!-- Page 3: Section 1 (will be randomized) -->
+            <!-- Page 3: Task 1 (will be randomized) -->
             <div class="page hidden randomized-page" id="page-section1" data-section="1">
-                <h1>Section 1</h1>
-                <p class="subtitle">Please answer the following questions</p>
+                <h1>Task 1: Pitch Discrimination for Isolated Tones</h1>
+                <p class="subtitle">Listen carefully and respond</p>
+                
+                <div class="task-description">
+                    <p>You will hear two short pure tones.</p>
+                    <p>Please decide whether the second tone is the same or slightly different from the first.</p>
+                    <p>Sometimes there is no change; sometimes the second tone is slightly higher or lower.</p>
+                    <p>Respond after each pair by choosing:</p>
+                    <ul>
+                        <li>"Same"</li>
+                        <li>"Different (higher)"</li>
+                        <li>"Different (lower)"</li>
+                    </ul>
+                    <p><strong>This task establishes your personal pitch-sensitivity baseline.</strong></p>
+                </div>
+
+                <div class="audio-player">
+                    <audio controls>
+                        <source src="data/flute_1.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
                 
                 <form id="section1Form">
                     <div class="form-group">
-                        <label>How satisfied are you with our service?</label>
+                        <label>Your response:</label>
                         <div class="radio-group">
                             <label class="radio-label">
-                                <input type="radio" name="satisfaction" value="Very Satisfied" required>
-                                Very Satisfied
+                                <input type="radio" name="pitchResponse" value="Same" required>
+                                Same
                             </label>
                             <label class="radio-label">
-                                <input type="radio" name="satisfaction" value="Satisfied">
-                                Satisfied
+                                <input type="radio" name="pitchResponse" value="Different (higher)">
+                                Different (higher)
                             </label>
                             <label class="radio-label">
-                                <input type="radio" name="satisfaction" value="Neutral">
-                                Neutral
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="satisfaction" value="Dissatisfied">
-                                Dissatisfied
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="satisfaction" value="Very Dissatisfied">
-                                Very Dissatisfied
+                                <input type="radio" name="pitchResponse" value="Different (lower)">
+                                Different (lower)
                             </label>
                         </div>
                     </div>
@@ -108,30 +244,40 @@
                 </form>
             </div>
 
-            <!-- Page 4: Section 2 (will be randomized) -->
+            <!-- Page 4: Task 2 (will be randomized) -->
             <div class="page hidden randomized-page" id="page-section2" data-section="2">
-                <h1>Section 2</h1>
-                <p class="subtitle">Please answer the following questions</p>
+                <h1>Task 2: Pitch Discrimination in a Familiar Melody</h1>
+                <p class="subtitle">"Happy Birthday"</p>
+                
+                <div class="task-description">
+                    <p>You will hear short excerpts of the melody "Happy Birthday."</p>
+                    <p>Two tones inside the melody may be slightly altered in pitch.</p>
+                    <p>After each example, indicate whether you heard a pitch change.</p>
+                    <p>If you did hear a change, indicate whether the altered tone was higher or lower than normal.</p>
+                </div>
+
+                <div class="audio-player">
+                    <audio controls>
+                        <source src="data/flute_1.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
                 
                 <form id="section2Form">
                     <div class="form-group">
-                        <label>Which features do you use? (Select all that apply)</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="features" value="Feature A">
-                                Feature A
+                        <label>Did you hear a pitch change?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse" value="Same" required>
+                                Same
                             </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="features" value="Feature B">
-                                Feature B
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse" value="Different (higher)">
+                                Different (higher)
                             </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="features" value="Feature C">
-                                Feature C
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="features" value="Feature D">
-                                Feature D
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse" value="Different (lower)">
+                                Different (lower)
                             </label>
                         </div>
                     </div>
@@ -140,22 +286,41 @@
                 </form>
             </div>
 
-            <!-- Page 5: Section 3 (will be randomized) -->
+            <!-- Page 5: Task 3 (will be randomized) -->
             <div class="page hidden randomized-page" id="page-section3" data-section="3">
-                <h1>Section 3</h1>
-                <p class="subtitle">Please answer the following questions</p>
+                <h1>Task 3: Pitch Discrimination in an Unfamiliar Melody</h1>
+                <p class="subtitle">Listen carefully and respond</p>
+                
+                <div class="task-description">
+                    <p>This task is identical to Task 2, but the melody will be unknown to you.</p>
+                    <p>Two tones may be slightly mistuned.</p>
+                    <p>Indicate whether you heard a change, and whether it was higher or lower.</p>
+                </div>
+
+                <div class="audio-player">
+                    <audio controls>
+                        <source src="data/flute_1.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
                 
                 <form id="section3Form">
                     <div class="form-group">
-                        <label for="experience">How would you rate your overall experience?</label>
-                        <select id="experience" name="experience" required>
-                            <option value="">-- Select an option --</option>
-                            <option value="Excellent">Excellent</option>
-                            <option value="Good">Good</option>
-                            <option value="Average">Average</option>
-                            <option value="Poor">Poor</option>
-                            <option value="Very Poor">Very Poor</option>
-                        </select>
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="unfamiliarResponse" value="Same" required>
+                                Same
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="unfamiliarResponse" value="Different (higher)">
+                                Different (higher)
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="unfamiliarResponse" value="Different (lower)">
+                                Different (lower)
+                            </label>
+                        </div>
                     </div>
 
                     <button type="button" class="nav-btn next-btn">Next</button>

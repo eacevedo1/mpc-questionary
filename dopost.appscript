@@ -5,16 +5,22 @@ function doPost(e) {
     // Parse the incoming data
     const data = JSON.parse(e.postData.contents);
     
-    // Create a new row with all the data including age
+    // Create a new row with all the data
     const row = [
       new Date(data.timestamp),
-      data.name,
-      data.email,
-      data.age, 
+      data.age,
+      data.country,
+      data.gender,
+      data.musicalTraining,
+      data.instruments,
+      data.musicFrequency,
+      data.happyBirthdayFamiliarity,
+      data.pitchTestExperience,
+      data.headphones,
       data.sectionOrder,
-      data.satisfaction,
-      data.features,
-      data.experience,
+      data.task1Response,
+      data.task2Response,
+      data.task3Response,
       data.feedback,
       new Date(data.completionTimestamp)
     ];
