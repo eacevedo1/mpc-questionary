@@ -1,0 +1,36 @@
+function doPost(e) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    
+    // Parse the incoming data
+    const data = JSON.parse(e.postData.contents);
+    
+    // Create a new row with all the data including age
+    const row = [
+      new Date(data.timestamp),
+      data.name,
+      data.email,
+      data.age, 
+      data.sectionOrder,
+      data.satisfaction,
+      data.features,
+      data.experience,
+      data.feedback,
+      new Date(data.completionTimestamp)
+    ];
+    
+    // Append the row to the sheet
+    sheet.appendRow(row);
+    
+    return ContentService.createTextOutput(JSON.stringify({
+      'result': 'success',
+      'row': row.length
+    })).setMimeType(ContentService.MimeType.JSON);
+    
+  } catch(error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      'result': 'error',
+      'error': error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
