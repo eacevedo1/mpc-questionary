@@ -9,85 +9,164 @@
 <body>
     <div class="container">
         <div class="questionnaire-wrapper">
-            <h1>Questionnaire</h1>
-            <p class="subtitle">Please fill out the following questions</p>
-            
-            <form id="questionnaireForm">
-                <!-- Question 1: Text input -->
-                <div class="form-group">
-                    <label for="name">What is your name?</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-
-                <!-- Question 2: Email -->
-                <div class="form-group">
-                    <label for="email">What is your email?</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-
-                <!-- Question 3: Multiple choice (Radio) -->
-                <div class="form-group">
-                    <label>How satisfied are you with our service?</label>
-                    <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="satisfaction" value="Very Satisfied" required>
-                            Very Satisfied
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="satisfaction" value="Satisfied">
-                            Satisfied
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="satisfaction" value="Neutral">
-                            Neutral
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="satisfaction" value="Dissatisfied">
-                            Dissatisfied
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="satisfaction" value="Very Dissatisfied">
-                            Very Dissatisfied
+            <!-- Page 1: Consent -->
+            <div class="page" id="page-consent">
+                <h1>Informed Consent</h1>
+                <p class="subtitle">Please read and accept to participate</p>
+                
+                <div class="consent-content">
+                    <p>By participating in this study, you agree to the following:</p>
+                    <ul>
+                        <li>Your participation is voluntary</li>
+                        <li>Your responses will be kept confidential</li>
+                        <li>You can withdraw at any time</li>
+                        <li>Your data will be used for research purposes only</li>
+                    </ul>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label consent-checkbox">
+                            <input type="checkbox" id="consentCheckbox" required>
+                            I have read and understood the above information and consent to participate
                         </label>
                     </div>
                 </div>
+                
+                <button class="nav-btn" id="startBtn" disabled>Start Questionnaire</button>
+            </div>
 
-                <!-- Question 4: Checkboxes -->
-                <div class="form-group">
-                    <label>Which features do you use? (Select all that apply)</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="features" value="Feature A">
-                            Feature A
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="features" value="Feature B">
-                            Feature B
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="features" value="Feature C">
-                            Feature C
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="features" value="Feature D">
-                            Feature D
-                        </label>
+            <!-- Page 2: Demographics -->
+            <div class="page hidden" id="page-demographics">
+                <h1>Demographics</h1>
+                <p class="subtitle">Please tell us about yourself</p>
+                
+                <form id="demographicsForm">
+                    <div class="form-group">
+                        <label for="name">What is your name?</label>
+                        <input type="text" id="name" name="name" required>
                     </div>
+
+                    <div class="form-group">
+                        <label for="email">What is your email?</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">What is your age?</label>
+                        <input type="number" id="age" name="age" min="18" max="120" required>
+                    </div>
+
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <!-- Page 3: Section 1 (will be randomized) -->
+            <div class="page hidden randomized-page" id="page-section1" data-section="1">
+                <h1>Section 1</h1>
+                <p class="subtitle">Please answer the following questions</p>
+                
+                <form id="section1Form">
+                    <div class="form-group">
+                        <label>How satisfied are you with our service?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="satisfaction" value="Very Satisfied" required>
+                                Very Satisfied
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="satisfaction" value="Satisfied">
+                                Satisfied
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="satisfaction" value="Neutral">
+                                Neutral
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="satisfaction" value="Dissatisfied">
+                                Dissatisfied
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="satisfaction" value="Very Dissatisfied">
+                                Very Dissatisfied
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <!-- Page 4: Section 2 (will be randomized) -->
+            <div class="page hidden randomized-page" id="page-section2" data-section="2">
+                <h1>Section 2</h1>
+                <p class="subtitle">Please answer the following questions</p>
+                
+                <form id="section2Form">
+                    <div class="form-group">
+                        <label>Which features do you use? (Select all that apply)</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="Feature A">
+                                Feature A
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="Feature B">
+                                Feature B
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="Feature C">
+                                Feature C
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="Feature D">
+                                Feature D
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <!-- Page 5: Section 3 (will be randomized) -->
+            <div class="page hidden randomized-page" id="page-section3" data-section="3">
+                <h1>Section 3</h1>
+                <p class="subtitle">Please answer the following questions</p>
+                
+                <form id="section3Form">
+                    <div class="form-group">
+                        <label for="experience">How would you rate your overall experience?</label>
+                        <select id="experience" name="experience" required>
+                            <option value="">-- Select an option --</option>
+                            <option value="Excellent">Excellent</option>
+                            <option value="Good">Good</option>
+                            <option value="Average">Average</option>
+                            <option value="Poor">Poor</option>
+                            <option value="Very Poor">Very Poor</option>
+                        </select>
+                    </div>
+
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <!-- Page 6: Final Submission -->
+            <div class="page hidden" id="page-final">
+                <h1>Final Comments</h1>
+                <p class="subtitle">Almost done! Any additional feedback?</p>
+                
+                <form id="finalForm">
+                    <div class="form-group">
+                        <label for="feedback">Additional comments or feedback:</label>
+                        <textarea id="feedback" name="feedback" rows="4"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit All Responses</button>
+                </form>
+
+                <!-- Success Message -->
+                <div id="successMessage" class="success-message hidden">
+                    <p>✓ Thank you! Your response has been submitted successfully.</p>
                 </div>
-
-                <!-- Question 5: Textarea -->
-                <div class="form-group">
-                    <label for="feedback">Additional comments or feedback:</label>
-                    <textarea id="feedback" name="feedback" rows="4"></textarea>
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="submit-btn">Submit</button>
-            </form>
-
-            <!-- Success Message -->
-            <div id="successMessage" class="success-message hidden">
-                <p>✓ Thank you! Your response has been submitted successfully.</p>
             </div>
         </div>
     </div>

@@ -147,6 +147,107 @@ textarea {
     display: none;
 }
 
+/* Page Navigation */
+.page {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.page.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Navigation Buttons */
+.nav-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 10px;
+}
+
+.nav-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+}
+
+.nav-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.nav-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Consent Page */
+.consent-content {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.consent-content p {
+    margin-bottom: 15px;
+    color: #333;
+    line-height: 1.6;
+}
+
+.consent-content ul {
+    list-style: disc;
+    margin-left: 30px;
+    margin-bottom: 20px;
+}
+
+.consent-content li {
+    margin-bottom: 10px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.consent-checkbox {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+/* Select Dropdown */
+select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+    background-color: white;
+    cursor: pointer;
+}
+
+select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
     .questionnaire-wrapper {
