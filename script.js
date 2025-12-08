@@ -5,8 +5,36 @@ const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbz2tGgPpsfQcm0
 // Global state to store all form data
 const formData = {
     timestamp: new Date().toISOString(),
-    sectionOrder: []
+    sectionOrder: [],
+    task1Trials: []
 };
+
+// Task 1 audio files and trial configuration
+const task1AudioFiles = [
+    { file: 'tone_pair_delta_+00Hz.wav', delta: 0, correctAnswer: 'Same' },
+    { file: 'tone_pair_delta_+01Hz.wav', delta: +1, correctAnswer: 'Higher' },
+    { file: 'tone_pair_delta_+02Hz.wav', delta: +2, correctAnswer: 'Higher' },
+    { file: 'tone_pair_delta_+03Hz.wav', delta: +3, correctAnswer: 'Higher' },
+    { file: 'tone_pair_delta_+04Hz.wav', delta: +4, correctAnswer: 'Higher' },
+    { file: 'tone_pair_delta_+05Hz.wav', delta: +5, correctAnswer: 'Higher' },
+    { file: 'tone_pair_delta_+06Hz.wav', delta: +6, correctAnswer: 'Higher' },
+    { file: 'tone_pair_delta_+07Hz.wav', delta: +7, correctAnswer: 'Higher' },
+    { file: 'tone_pair_delta_+08Hz.wav', delta: +8, correctAnswer: 'Higher' },
+    { file: 'tone_pair_delta_+09Hz.wav', delta: +9, correctAnswer: 'Higher' },
+    { file: 'tone_pair_delta_+10Hz.wav', delta: +10, correctAnswer: 'Higher' },
+    { file: 'tone_pair_delta_-01Hz.wav', delta: -1, correctAnswer: 'Lower' },
+    { file: 'tone_pair_delta_-02Hz.wav', delta: -2, correctAnswer: 'Lower' },
+    { file: 'tone_pair_delta_-03Hz.wav', delta: -3, correctAnswer: 'Lower' },
+    { file: 'tone_pair_delta_-04Hz.wav', delta: -4, correctAnswer: 'Lower' },
+    { file: 'tone_pair_delta_-05Hz.wav', delta: -5, correctAnswer: 'Lower' },
+    { file: 'tone_pair_delta_-06Hz.wav', delta: -6, correctAnswer: 'Lower' },
+    { file: 'tone_pair_delta_-07Hz.wav', delta: -7, correctAnswer: 'Lower' },
+    { file: 'tone_pair_delta_-08Hz.wav', delta: -8, correctAnswer: 'Lower' },
+    { file: 'tone_pair_delta_-09Hz.wav', delta: -9, correctAnswer: 'Lower' },
+    { file: 'tone_pair_delta_-10Hz.wav', delta: -10, correctAnswer: 'Lower' }
+];
+
+let task1SelectedTrials = [];
 
 // Current page tracking
 let currentPageIndex = 0;
@@ -65,9 +93,20 @@ function initializePages() {
 }
 
 function setupRandomizedPages() {
+    // Select 7 random audio files for Task 1 (1 practice + 6 test trials)
+    const shuffledAudio = shuffleArray([...task1AudioFiles]);
+    task1SelectedTrials = shuffledAudio.slice(0, 7);
+    
+    // Store the selected trials for later analysis
+    formData.task1AudioFiles = task1SelectedTrials.map(trial => ({
+        file: trial.file,
+        delta: trial.delta,
+        correctAnswer: trial.correctAnswer
+    }));
+    
     // Get all randomized section pages (now each section has description + activity page)
     const randomizedSections = [
-        ['page-section1-description', 'page-section1'],
+        ['page-section1-description', 'page-section1-practice', 'page-section1-trial1', 'page-section1-trial2', 'page-section1-trial3', 'page-section1-trial4', 'page-section1-trial5', 'page-section1-trial6'],
         ['page-section2-description', 'page-section2'],
         ['page-section3-description', 'page-section3']
     ];
@@ -77,33 +116,154 @@ function setupRandomizedPages() {
     
     // Store the randomized order
     formData.sectionOrder = shuffled.map((section, index) => {
-        const sectionNum = section[1].replace('page-section', '');
+        const firstPage = section[0];
+        const sectionNum = firstPage.replace('page-section', '').replace('-description', '');
         return `Section${sectionNum}`;
     });
     
     // Flatten and add shuffled pages to the pages array
     shuffled.forEach(section => {
-        pages.push(section[0]); // description page
-        pages.push(section[1]); // activity page
+        section.forEach(pageId => {
+            pages.push(pageId);
+        });
     });
     
     // Add final page at the end
     pages.push('page-final');
     
-    // Setup next buttons for randomized activity pages (description pages use onclick in HTML)
-    shuffled.forEach((section, index) => {
-        const pageId = section[1]; // activity page
-        const page = document.getElementById(pageId);
-        const form = page.querySelector('form');
-        const nextBtn = form.querySelector('.next-btn');
+    // Setup Task 1 pages
+    setupTask1Pages();
+    
+    // Setup next buttons for other randomized activity pages (description pages use onclick in HTML)
+    const section2Pages = shuffled.find(s => s[0] === 'page-section2-description');
+    const section3Pages = shuffled.find(s => s[0] === 'page-section3-description');
+    
+    if (section2Pages) {
+        setupSectionPage('page-section2', 'section2Form');
+    }
+    if (section3Pages) {
+        setupSectionPage('page-section3', 'section3Form');
+    }
+}
+
+function setupTask1Pages() {
+    // Setup practice trial
+    const practicePage = document.getElementById('page-section1-practice');
+    const practiceForm = document.getElementById('section1PracticeForm');
+    const practiceBtn = practiceForm.querySelector('.next-btn');
+    const practiceAudio = document.getElementById('audio-task1-practice');
+    
+    // Set practice audio
+    practiceAudio.querySelector('source').src = `data/task1_isolated_tones/${task1SelectedTrials[0].file}`;
+    practiceAudio.load();
+    
+    // Track when trial starts (when page is shown)
+    let practiceStartTime = null;
+    const practiceObserver = new MutationObserver(() => {
+        if (!practicePage.classList.contains('hidden') && !practiceStartTime) {
+            practiceStartTime = new Date().toISOString();
+        }
+    });
+    practiceObserver.observe(practicePage, { attributes: true, attributeFilter: ['class'] });
+    
+    practiceBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (validateForm(practiceForm)) {
+            const userResponse = document.querySelector('input[name="pitchResponsePractice"]:checked').value;
+            const correctAnswer = task1SelectedTrials[0].correctAnswer;
+            
+            // Show feedback
+            const feedbackDiv = document.getElementById('practice-feedback');
+            feedbackDiv.classList.remove('hidden');
+            
+            if (userResponse === correctAnswer) {
+                feedbackDiv.innerHTML = '✓ <strong>Correct!</strong> The comparison tone was ' + correctAnswer.toLowerCase() + '.';
+                feedbackDiv.style.color = '#28a745';
+            } else {
+                feedbackDiv.innerHTML = '✗ <strong>Not quite.</strong> The comparison tone was actually ' + correctAnswer.toLowerCase() + '. You answered: ' + userResponse.toLowerCase() + '.';
+                feedbackDiv.style.color = '#dc3545';
+            }
+            
+            // Save practice data
+            formData.task1Trials.push({
+                trialType: 'practice',
+                audioFile: task1SelectedTrials[0].file,
+                delta: task1SelectedTrials[0].delta,
+                correctAnswer: correctAnswer,
+                userResponse: userResponse,
+                correct: userResponse === correctAnswer,
+                startTimestamp: practiceStartTime,
+                responseTimestamp: new Date().toISOString()
+            });
+            
+            // Change button text and proceed on second click
+            if (practiceBtn.textContent === 'Next') {
+                practiceBtn.textContent = 'Continue to Test Trials';
+            } else {
+                nextPage();
+            }
+        }
+    });
+    
+    // Setup test trials
+    for (let i = 1; i <= 6; i++) {
+        const trialPage = document.getElementById(`page-section1-trial${i}`);
+        const trialForm = document.getElementById(`section1Trial${i}Form`);
+        const trialBtn = trialForm.querySelector('.next-btn');
+        const trialAudio = document.getElementById(`audio-task1-trial${i}`);
         
-        nextBtn.addEventListener('click', function(e) {
+        // Set audio for this trial
+        trialAudio.querySelector('source').src = `data/task1_isolated_tones/${task1SelectedTrials[i].file}`;
+        trialAudio.load();
+        
+        // Track when trial starts (when page is shown)
+        let trialStartTime = null;
+        const trialObserver = new MutationObserver(() => {
+            if (!trialPage.classList.contains('hidden') && !trialStartTime) {
+                trialStartTime = new Date().toISOString();
+            }
+        });
+        trialObserver.observe(trialPage, { attributes: true, attributeFilter: ['class'] });
+        
+        // Add event listener
+        trialBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            if (validateForm(form)) {
-                saveSectionData(pageId, form);
+            if (validateForm(trialForm)) {
+                const userResponse = document.querySelector(`input[name="pitchResponse${i}"]:checked`).value;
+                const correctAnswer = task1SelectedTrials[i].correctAnswer;
+                
+                // Save trial data
+                formData.task1Trials.push({
+                    trialType: 'test',
+                    trialNumber: i,
+                    audioFile: task1SelectedTrials[i].file,
+                    delta: task1SelectedTrials[i].delta,
+                    correctAnswer: correctAnswer,
+                    userResponse: userResponse,
+                    correct: userResponse === correctAnswer,
+                    startTimestamp: trialStartTime,
+                    responseTimestamp: new Date().toISOString()
+                });
+                
                 nextPage();
             }
         });
+    }
+}
+
+function setupSectionPage(pageId, formId) {
+    const page = document.getElementById(pageId);
+    if (!page) return;
+    
+    const form = document.getElementById(formId);
+    const nextBtn = form.querySelector('.next-btn');
+    
+    nextBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (validateForm(form)) {
+            saveSectionData(pageId, form);
+            nextPage();
+        }
     });
 }
 
@@ -210,6 +370,11 @@ function submitAllData() {
     submitBtn.textContent = 'Submitting...';
     submitBtn.disabled = true;
     
+    // Calculate Task 1 accuracy
+    const task1TestTrials = formData.task1Trials.filter(t => t.trialType === 'test');
+    const task1Correct = task1TestTrials.filter(t => t.correct).length;
+    const task1Accuracy = task1TestTrials.length > 0 ? (task1Correct / task1TestTrials.length * 100).toFixed(1) : 0;
+    
     // Prepare data for Google Sheets
     const submissionData = {
         timestamp: formData.timestamp,
@@ -223,7 +388,8 @@ function submitAllData() {
         pitchTestExperience: formData.pitchTestExperience,
         headphones: formData.headphones,
         sectionOrder: formData.sectionOrder.join(' → '),
-        task1Response: formData.section1?.pitchResponse || '',
+        task1Accuracy: task1Accuracy + '%',
+        task1Details: JSON.stringify(formData.task1Trials),
         task2Response: formData.section2?.melodyResponse || '',
         task3Response: formData.section3?.unfamiliarResponse || '',
         feedback: formData.feedback,

@@ -222,50 +222,243 @@
                 <button class="nav-btn" onclick="nextPage()">Start Task 1</button>
             </div>
 
-            <!-- Page 3b: Task 1 Activity (will be randomized) -->
-            <div class="page hidden randomized-page" id="page-section1" data-section="1">
-                <h1>Task 1: Pitch Discrimination for Isolated Tones</h1>
-                <p class="subtitle">Listen carefully and respond</p>
+            <!-- Page 3b: Task 1 Practice Trial -->
+            <div class="page hidden randomized-page" id="page-section1-practice" data-section="1">
+                <h1>Task 1: Practice Trial</h1>
+                <p class="subtitle">🎯 Trial with Feedback</p>
                 
-                <div class="task-description">
-                    <p>You will hear two short pure tones.</p>
-                    <p>Please decide whether the second tone is the same or slightly different from the first.</p>
-                    <p>Sometimes there is no change; sometimes the second tone is slightly higher or lower.</p>
-                    <p>Respond after each pair by choosing:</p>
-                    <ul>
-                        <li>"Same"</li>
-                        <li>"Different (higher)"</li>
-                        <li>"Different (lower)"</li>
-                    </ul>
-                    <p><strong>This task establishes your personal pitch-sensitivity baseline.</strong></p>
+                <div class="trial-info">
+                    <p><strong>This is a practice trial.</strong> You will receive feedback on your answer.</p>
+                    <p>Listen to the two tones and decide if the second tone is SAME, HIGHER, or LOWER than the first.</p>
                 </div>
 
                 <div class="audio-player">
-                    <audio controls>
-                        <source src="data/flute_1.wav" type="audio/wav">
+                    <audio id="audio-task1-practice" controls>
+                        <source src="" type="audio/wav">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
                 
-                <form id="section1Form">
+                <form id="section1PracticeForm">
                     <div class="form-group">
                         <label>Your response:</label>
                         <div class="radio-group">
                             <label class="radio-label">
-                                <input type="radio" name="pitchResponse" value="Same" required>
+                                <input type="radio" name="pitchResponsePractice" value="Same" required>
                                 SAME
                             </label>
                             <label class="radio-label">
-                                <input type="radio" name="pitchResponse" value="Higher">
+                                <input type="radio" name="pitchResponsePractice" value="Higher">
                                 HIGHER
                             </label>
                             <label class="radio-label">
-                                <input type="radio" name="pitchResponse" value="Lower">
+                                <input type="radio" name="pitchResponsePractice" value="Lower">
                                 LOWER
                             </label>
                         </div>
                     </div>
 
+                    <div id="practice-feedback" class="feedback-message hidden"></div>
+
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <!-- Pages 3c-3h: Task 1 Test Trials (6 trials) -->
+            <div class="page hidden randomized-page" id="page-section1-trial1" data-section="1">
+                <h1>Task 1: Trial 1 of 6</h1>
+                <p class="subtitle">Listen carefully and respond</p>
+                
+                <div class="audio-player">
+                    <audio id="audio-task1-trial1" controls>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <form id="section1Trial1Form">
+                    <div class="form-group">
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse1" value="Same" required>
+                                SAME
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse1" value="Higher">
+                                HIGHER
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse1" value="Lower">
+                                LOWER
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <div class="page hidden randomized-page" id="page-section1-trial2" data-section="1">
+                <h1>Task 1: Trial 2 of 6</h1>
+                <p class="subtitle">Listen carefully and respond</p>
+                
+                <div class="audio-player">
+                    <audio id="audio-task1-trial2" controls>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <form id="section1Trial2Form">
+                    <div class="form-group">
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse2" value="Same" required>
+                                SAME
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse2" value="Higher">
+                                HIGHER
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse2" value="Lower">
+                                LOWER
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <div class="page hidden randomized-page" id="page-section1-trial3" data-section="1">
+                <h1>Task 1: Trial 3 of 6</h1>
+                <p class="subtitle">Listen carefully and respond</p>
+                
+                <div class="audio-player">
+                    <audio id="audio-task1-trial3" controls>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <form id="section1Trial3Form">
+                    <div class="form-group">
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse3" value="Same" required>
+                                SAME
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse3" value="Higher">
+                                HIGHER
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse3" value="Lower">
+                                LOWER
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <div class="page hidden randomized-page" id="page-section1-trial4" data-section="1">
+                <h1>Task 1: Trial 4 of 6</h1>
+                <p class="subtitle">Listen carefully and respond</p>
+                
+                <div class="audio-player">
+                    <audio id="audio-task1-trial4" controls>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <form id="section1Trial4Form">
+                    <div class="form-group">
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse4" value="Same" required>
+                                SAME
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse4" value="Higher">
+                                HIGHER
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse4" value="Lower">
+                                LOWER
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <div class="page hidden randomized-page" id="page-section1-trial5" data-section="1">
+                <h1>Task 1: Trial 5 of 6</h1>
+                <p class="subtitle">Listen carefully and respond</p>
+                
+                <div class="audio-player">
+                    <audio id="audio-task1-trial5" controls>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <form id="section1Trial5Form">
+                    <div class="form-group">
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse5" value="Same" required>
+                                SAME
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse5" value="Higher">
+                                HIGHER
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse5" value="Lower">
+                                LOWER
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <div class="page hidden randomized-page" id="page-section1-trial6" data-section="1">
+                <h1>Task 1: Trial 6 of 6</h1>
+                <p class="subtitle">Listen carefully and respond</p>
+                
+                <div class="audio-player">
+                    <audio id="audio-task1-trial6" controls>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <form id="section1Trial6Form">
+                    <div class="form-group">
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse6" value="Same" required>
+                                SAME
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse6" value="Higher">
+                                HIGHER
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="pitchResponse6" value="Lower">
+                                LOWER
+                            </label>
+                        </div>
+                    </div>
                     <button type="button" class="nav-btn next-btn">Next</button>
                 </form>
             </div>

@@ -1,3 +1,36 @@
+/**
+ * Google Apps Script for MPC Questionnaire Data Collection
+ * 
+ * Expected Google Sheets Column Structure:
+ * 
+ * A: Timestamp
+ * B: Age
+ * C: Country
+ * D: Gender
+ * E: Musical Training
+ * F: Instruments
+ * G: Music Frequency
+ * H: Happy Birthday Familiarity
+ * I: Pitch Test Experience
+ * J: Headphones
+ * K: Section Order
+ * L: Task 1 Accuracy
+ * 
+ * Task 1 Trials (Practice + 6 Test Trials) - 6 columns per trial:
+ * M-R: Trial 1 (Practice) - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
+ * S-X: Trial 2 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
+ * Y-AD: Trial 3 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
+ * AE-AJ: Trial 4 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
+ * AK-AP: Trial 5 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
+ * AQ-AV: Trial 6 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
+ * AW-BB: Trial 7 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
+ * 
+ * BC: Task 2 Response
+ * BD: Task 3 Response
+ * BE: Feedback
+ * BF: Completion Timestamp
+ */
+
 function doPost(e) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -5,7 +38,10 @@ function doPost(e) {
     // Parse the incoming data
     const data = JSON.parse(e.postData.contents);
     
-    // Create a new row with all the data
+    // Parse Task 1 trials
+    const task1Trials = JSON.parse(data.task1Details || '[]');
+    
+    // Create base row with demographics
     const row = [
       new Date(data.timestamp),
       data.age,
@@ -18,12 +54,35 @@ function doPost(e) {
       data.pitchTestExperience,
       data.headphones,
       data.sectionOrder,
-      data.task1Response,
-      data.task2Response,
-      data.task3Response,
-      data.feedback,
-      new Date(data.completionTimestamp)
+      data.task1Accuracy
     ];
+    
+    // Add Task 1 trial data (7 trials: 1 practice + 6 test)
+    // For each trial: audioFile, userResponse, correctAnswer, correct, startTime, responseTime
+    for (let i = 0; i < 7; i++) {
+      if (task1Trials[i]) {
+        const trial = task1Trials[i];
+        row.push(
+          trial.audioFile || '',
+          trial.userResponse || '',
+          trial.correctAnswer || '',
+          trial.correct ? 'Correct' : 'Incorrect',
+          trial.startTimestamp ? new Date(trial.startTimestamp) : '',
+          trial.responseTimestamp ? new Date(trial.responseTimestamp) : ''
+        );
+      } else {
+        // Empty cells if trial doesn't exist
+        row.push('', '', '', '', '', '');
+      }
+    }
+    
+    // Add remaining task data
+    row.push(
+      data.task2Response || '',
+      data.task3Response || '',
+      data.feedback || '',
+      new Date(data.completionTimestamp)
+    );
     
     // Append the row to the sheet
     sheet.appendRow(row);
@@ -39,4 +98,122 @@ function doPost(e) {
       'error': error.toString()
     })).setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+/**
+ * Run this function once to set up the Google Sheets headers
+ * Instructions:
+ * 1. Open your Google Sheet
+ * 2. Go to Extensions > Apps Script
+ * 3. Paste this entire code
+ * 4. Run the setupHeaders() function (you'll need to authorize it)
+ * 5. Your sheet will now have properly labeled columns
+ */
+function setupHeaders() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  const headers = [
+    'Timestamp',
+    'Age',
+    'Country',
+    'Gender',
+    'Musical Training',
+    'Instruments',
+    'Music Frequency',
+    'Happy Birthday Familiarity',
+    'Pitch Test Experience',
+    'Headphones',
+    'Section Order',
+    'Task 1 Accuracy',
+    // Practice Trial
+    'T1P Audio File',
+    'T1P User Response',
+    'T1P Correct Answer',
+    'T1P Result',
+    'T1P Start Time',
+    'T1P Response Time',
+    // Test Trial 1
+    'T1-1 Audio File',
+    'T1-1 User Response',
+    'T1-1 Correct Answer',
+    'T1-1 Result',
+    'T1-1 Start Time',
+    'T1-1 Response Time',
+    // Test Trial 2
+    'T1-2 Audio File',
+    'T1-2 User Response',
+    'T1-2 Correct Answer',
+    'T1-2 Result',
+    'T1-2 Start Time',
+    'T1-2 Response Time',
+    // Test Trial 3
+    'T1-3 Audio File',
+    'T1-3 User Response',
+    'T1-3 Correct Answer',
+    'T1-3 Result',
+    'T1-3 Start Time',
+    'T1-3 Response Time',
+    // Test Trial 4
+    'T1-4 Audio File',
+    'T1-4 User Response',
+    'T1-4 Correct Answer',
+    'T1-4 Result',
+    'T1-4 Start Time',
+    'T1-4 Response Time',
+    // Test Trial 5
+    'T1-5 Audio File',
+    'T1-5 User Response',
+    'T1-5 Correct Answer',
+    'T1-5 Result',
+    'T1-5 Start Time',
+    'T1-5 Response Time',
+    // Test Trial 6
+    'T1-6 Audio File',
+    'T1-6 User Response',
+    'T1-6 Correct Answer',
+    'T1-6 Result',
+    'T1-6 Start Time',
+    'T1-6 Response Time',
+    'Task 2 Response',
+    'Task 3 Response',
+    'Feedback',
+    'Completion Timestamp'
+  ];
+  
+  // Check if headers already exist
+  const firstRow = sheet.getRange(1, 1, 1, headers.length).getValues()[0];
+  const hasHeaders = firstRow.some(cell => cell !== '');
+  
+  if (hasHeaders) {
+    const ui = SpreadsheetApp.getUi();
+    const response = ui.alert(
+      'Headers Already Exist',
+      'The first row already contains data. Do you want to overwrite it?',
+      ui.ButtonSet.YES_NO
+    );
+    
+    if (response !== ui.Button.YES) {
+      return;
+    }
+  }
+  
+  // Set headers
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+  
+  // Format headers
+  sheet.getRange(1, 1, 1, headers.length)
+    .setFontWeight('bold')
+    .setBackground('#4285f4')
+    .setFontColor('#ffffff')
+    .setHorizontalAlignment('center');
+  
+  // Freeze header row
+  sheet.setFrozenRows(1);
+  
+  // Auto-resize columns
+  for (let i = 1; i <= headers.length; i++) {
+    sheet.autoResizeColumn(i);
+  }
+  
+  SpreadsheetApp.getUi().alert('Headers set up successfully!');
 }

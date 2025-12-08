@@ -456,3 +456,37 @@ select:focus {
         font-size: 14px;
     }
 }
+
+/* Trial Info Box */
+.trial-info {
+    background: #eff6ff;
+    border: 1.5px solid #93c5fd;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+}
+
+.trial-info p {
+    color: #1e40af;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.trial-info p:last-child {
+    margin-bottom: 0;
+}
+
+/* Feedback Message */
+.feedback-message {
+    margin-top: 20px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    background: #f3f4f6;
+    border: 1.5px solid #d1d5db;
+}
+
+.feedback-message.hidden {
+    display: none;
+}

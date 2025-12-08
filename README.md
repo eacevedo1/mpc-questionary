@@ -1,117 +1,123 @@
-# Questionnaire Setup Guide
+# MPC Questionnaire - Music Perception and Cognition Study
 
-## Files Created
-- `index.html` - Main questionnaire page
-- `styles.css` - Styling for the questionnaire
-- `script.js` - JavaScript to handle form submission to Google Sheets
+## Overview
+This questionnaire collects data for a music perception study involving pitch discrimination tasks in different contexts (isolated tones, familiar melody, unfamiliar melody).
 
-## How to Connect to Your Google Sheet
+## Files
+- `index.html` - Main questionnaire interface
+- `styles.css` - Styling and visual design
+- `script.js` - Client-side logic and data handling
+- `dopost.appscript` - Google Apps Script for data collection
+- `data/task1_isolated_tones/` - Audio files for isolated tone discrimination
+- `data/task2_melody_D4/` - Audio files for familiar melody (D4 alterations)
+- `data/task2_melody_F4/` - Audio files for familiar melody (F4 alterations)
+
+## Data Collection Structure
+
+### Task 1: Pitch Discrimination for Isolated Tones
+The questionnaire collects detailed trial-by-trial data including:
+- **Audio file played** (e.g., `tone_pair_delta_+05Hz.wav`)
+- **User response** (Same, Higher, or Lower)
+- **Correct answer**
+- **Result** (Correct/Incorrect)
+- **Start timestamp** (when the trial page was shown)
+- **Response timestamp** (when user submitted their answer)
+
+Each participant completes:
+- 1 practice trial (with feedback)
+- 6 test trials (without feedback)
+
+## Google Sheets Setup
 
 ### Step 1: Create a Google Sheet
 1. Go to [Google Sheets](https://sheets.google.com)
 2. Create a new spreadsheet
-3. Name it something like "Questionnaire Responses"
-4. In the first row, add headers: `Timestamp`, `Name`, `Email`, `Satisfaction`, `Features`, `Feedback`
+3. Name it "MPC Questionnaire Responses"
 
-### Step 2: Create a Google Apps Script
+### Step 2: Set Up Google Apps Script
 1. In your Google Sheet, click **Extensions** → **Apps Script**
 2. Delete any default code
-3. Copy and paste the following code:
-
-```javascript
-function doPost(e) {
-  try {
-    // Get the active spreadsheet
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    
-    // Parse the incoming data
-    var data = JSON.parse(e.postData.contents);
-    
-    // Append a new row with the data
-    sheet.appendRow([
-      data.timestamp,
-      data.name,
-      data.email,
-      data.satisfaction,
-      data.features,
-      data.feedback
-    ]);
-    
-    // Return success response
-    return ContentService.createTextOutput(JSON.stringify({
-      'result': 'success',
-      'row': sheet.getLastRow()
-    }))
-    .setMimeType(ContentService.MimeType.JSON);
-    
-  } catch(error) {
-    // Return error response
-    return ContentService.createTextOutput(JSON.stringify({
-      'result': 'error',
-      'error': error.toString()
-    }))
-    .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-```
-
+3. Copy and paste the **entire contents** of `dopost.appscript` file
 4. Click the **disk icon** (💾) to save
-5. Name your project (e.g., "Questionnaire Handler")
+5. Name your project "MPC Data Handler"
 
-### Step 3: Deploy the Script as a Web App
-1. Click **Deploy** → **New deployment**
-2. Click the gear icon (⚙️) next to "Select type"
-3. Select **Web app**
-4. Configure the deployment:
-   - **Description**: "Questionnaire form handler" (or any description)
-   - **Execute as**: **Me** (your email)
-   - **Who has access**: **Anyone** (important!)
-5. Click **Deploy**
-6. Review permissions:
-   - Click **Authorize access**
+### Step 3: Set Up Column Headers (Important!)
+1. In the Apps Script editor, find the function dropdown (top toolbar)
+2. Select **setupHeaders** from the dropdown
+3. Click the **Run** button (▶️)
+4. Authorize the script:
+   - Click **Review permissions**
    - Choose your Google account
    - Click **Advanced** → **Go to [Project Name] (unsafe)**
    - Click **Allow**
-7. Copy the **Web app URL** (it should look like: `https://script.google.com/macros/s/LONG_ID_HERE/exec`)
+5. Your Google Sheet will now have all the proper column headers automatically!
 
-### Step 4: Update script.js
-Open `script.js` and replace:
+**Expected columns:**
+- Demographics (Age, Country, Gender, etc.)
+- Task 1 Accuracy
+- Task 1 Trial details (7 trials × 6 columns each = 42 columns):
+  - Practice trial + 6 test trials
+  - Each trial: Audio File, User Response, Correct Answer, Result, Start Time, Response Time
+- Task 2 Response
+- Task 3 Response
+- Feedback
+- Completion Timestamp
 
-```javascript
-const GOOGLE_SHEET_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
-```
+### Step 4: Deploy as Web App
+### Step 4: Deploy as Web App
+1. In Apps Script, click **Deploy** → **New deployment**
+2. Click the gear icon (⚙️) next to "Select type"
+3. Select **Web app**
+4. Configure:
+   - **Description**: "MPC Questionnaire Handler"
+   - **Execute as**: **Me**
+   - **Who has access**: **Anyone**
+5. Click **Deploy**
+6. Copy the **Web app URL**
 
-With your actual Web App URL:
+### Step 5: Update script.js
+Open `script.js` and update line 3:
 
 ```javascript
 const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/YOUR_ACTUAL_ID/exec';
 ```
 
-### Step 5: Test Your Form
-1. Open `index.html` in your browser
-2. Fill out the questionnaire
-3. Click Submit
-4. Check your Google Sheet - a new row should appear with the submitted data!
+### Step 6: Test
+1. Open `index.html` in a browser
+2. Complete the questionnaire
+3. Check your Google Sheet for the new row with all trial data!
 
-## Customization Tips
+## Understanding the Data
+
+### Task 1 Data Columns
+For each trial (practice + 6 test trials), you'll see:
+1. **Audio File**: Which tone pair was played (e.g., `tone_pair_delta_+05Hz.wav`)
+2. **User Response**: What the participant answered (Same/Higher/Lower)
+3. **Correct Answer**: The actual correct answer
+4. **Result**: Whether they got it correct or incorrect
+5. **Start Time**: When the trial page was displayed
+6. **Response Time**: When they submitted their answer
+
+### Analyzing Response Time
+You can calculate how long each participant took per trial by computing the difference between Start Time and Response Time.
+
+### Task 1 Accuracy
+The "Task 1 Accuracy" column shows the overall percentage correct (practice trial not included in calculation).
+
+## Customization
 
 ### Modify Questions
-Edit `index.html` to add, remove, or modify questions. If you add new fields:
-1. Update the data collection in `script.js` (around line 10)
-2. Update the Google Apps Script to include the new field
-3. Add a corresponding column header in your Google Sheet
+Edit `index.html` sections for demographics or task instructions.
 
-### Change Colors
-Edit `styles.css` to customize the color scheme:
-- Lines 8-9: Background gradient colors
-- Line 86: Button gradient colors
+### Change Audio Files
+Add/replace files in the `data/` folders and update the file arrays in `script.js`.
 
-### Modify Data Format
-In the Google Apps Script, you can:
-- Format the timestamp differently
-- Add data validation
-- Send email notifications when form is submitted
-- Redirect to different sheets based on responses
+### Adjust Number of Trials
+Currently set to 1 practice + 6 test trials. To change:
+1. Update HTML pages in `index.html`
+2. Update loop in `setupTask1Pages()` function in `script.js`
+3. Update `dopost.appscript` trial count (line 28)
+4. Re-run `setupHeaders()` in Apps Script
 
 ## Troubleshooting
 
