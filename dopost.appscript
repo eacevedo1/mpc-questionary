@@ -27,18 +27,28 @@
  * 
  * BC: Task 2 Accuracy
  * 
- * Task 2 Trials (Practice + 6 Test Trials) - 7 columns per trial:
- * BD-BJ: Trial 1 (Practice) - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * BK-BQ: Trial 2 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * BR-BX: Trial 3 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * BY-CE: Trial 4 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * CF-CL: Trial 5 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * CM-CS: Trial 6 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * CT-CZ: Trial 7 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * Task 2 Trials (Practice + 6 Test Trials) - 8 columns per trial:
+ * BD-BK: Trial 1 (Practice) - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * BL-BS: Trial 2 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * BT-CA: Trial 3 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * CB-CI: Trial 4 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * CJ-CQ: Trial 5 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * CR-CY: Trial 6 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * CZ-DG: Trial 7 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
  * 
- * DA: Task 3 Response
- * DB: Feedback
- * DC: Completion Timestamp
+ * DH: Task 3 Accuracy
+ * 
+ * Task 3 Trials (Practice + 6 Test Trials) - 8 columns per trial:
+ * DI-DP: Trial 1 (Practice) - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * DQ-DX: Trial 2 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * DY-EF: Trial 3 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * EG-EN: Trial 4 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * EO-EV: Trial 5 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * EW-FD: Trial 6 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * FE-FL: Trial 7 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * 
+ * FM: Feedback
+ * FN: Completion Timestamp
  */
 
 function doPost(e) {
@@ -53,6 +63,9 @@ function doPost(e) {
     
     // Parse Task 2 trials
     const task2Trials = JSON.parse(data.task2Details || '[]');
+    
+    // Parse Task 3 trials
+    const task3Trials = JSON.parse(data.task3Details || '[]');
     
     // Create base row with demographics
     const row = [
@@ -113,9 +126,32 @@ function doPost(e) {
       }
     }
     
-    // Add remaining task data
+    // Add Task 3 accuracy
+    row.push(data.task3Accuracy || '');
+    
+    // Add Task 3 trial data (7 trials: 1 practice + 6 test)
+    // For each trial: audioFile, note, notePosition, userResponse, correctAnswer, correct, startTime, responseTime
+    for (let i = 0; i < 7; i++) {
+      if (task3Trials[i]) {
+        const trial = task3Trials[i];
+        row.push(
+          trial.audioFile || '',
+          trial.note || '',
+          trial.notePosition || '',
+          trial.userResponse || '',
+          trial.correctAnswer || '',
+          trial.correct ? 'Correct' : 'Incorrect',
+          trial.startTimestamp ? new Date(trial.startTimestamp) : '',
+          trial.responseTimestamp ? new Date(trial.responseTimestamp) : ''
+        );
+      } else {
+        // Empty cells if trial doesn't exist
+        row.push('', '', '', '', '', '', '', '');
+      }
+    }
+    
+    // Add remaining data
     row.push(
-      data.task3Response || '',
       data.feedback || '',
       new Date(data.completionTimestamp)
     );
@@ -274,7 +310,70 @@ function setupHeaders() {
     'T2-6 Result',
     'T2-6 Start Time',
     'T2-6 Response Time',
-    'Task 3 Response',
+    'Task 3 Accuracy',
+    // Task 3 Practice Trial
+    'T3P Audio File',
+    'T3P Note',
+    'T3P Note Position',
+    'T3P User Response',
+    'T3P Correct Answer',
+    'T3P Result',
+    'T3P Start Time',
+    'T3P Response Time',
+    // Task 3 Test Trial 1
+    'T3-1 Audio File',
+    'T3-1 Note',
+    'T3-1 Note Position',
+    'T3-1 User Response',
+    'T3-1 Correct Answer',
+    'T3-1 Result',
+    'T3-1 Start Time',
+    'T3-1 Response Time',
+    // Task 3 Test Trial 2
+    'T3-2 Audio File',
+    'T3-2 Note',
+    'T3-2 Note Position',
+    'T3-2 User Response',
+    'T3-2 Correct Answer',
+    'T3-2 Result',
+    'T3-2 Start Time',
+    'T3-2 Response Time',
+    // Task 3 Test Trial 3
+    'T3-3 Audio File',
+    'T3-3 Note',
+    'T3-3 Note Position',
+    'T3-3 User Response',
+    'T3-3 Correct Answer',
+    'T3-3 Result',
+    'T3-3 Start Time',
+    'T3-3 Response Time',
+    // Task 3 Test Trial 4
+    'T3-4 Audio File',
+    'T3-4 Note',
+    'T3-4 Note Position',
+    'T3-4 User Response',
+    'T3-4 Correct Answer',
+    'T3-4 Result',
+    'T3-4 Start Time',
+    'T3-4 Response Time',
+    // Task 3 Test Trial 5
+    'T3-5 Audio File',
+    'T3-5 Note',
+    'T3-5 Note Position',
+    'T3-5 User Response',
+    'T3-5 Correct Answer',
+    'T3-5 Result',
+    'T3-5 Start Time',
+    'T3-5 Response Time',
+    // Task 3 Test Trial 6
+    'T3-6 Audio File',
+    'T3-6 Note',
+    'T3-6 Note Position',
+    'T3-6 User Response',
+    'T3-6 Correct Answer',
+    'T3-6 Result',
+    'T3-6 Start Time',
+    'T3-6 Response Time',
     'Feedback',
     'Completion Timestamp'
   ];
