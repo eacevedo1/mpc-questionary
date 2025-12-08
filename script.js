@@ -65,26 +65,34 @@ function initializePages() {
 }
 
 function setupRandomizedPages() {
-    // Get all randomized section pages
-    const randomizedPages = ['page-section1', 'page-section2', 'page-section3'];
+    // Get all randomized section pages (now each section has description + activity page)
+    const randomizedSections = [
+        ['page-section1-description', 'page-section1'],
+        ['page-section2-description', 'page-section2'],
+        ['page-section3-description', 'page-section3']
+    ];
     
-    // Shuffle the array using Fisher-Yates algorithm
-    const shuffled = shuffleArray([...randomizedPages]);
+    // Shuffle the sections using Fisher-Yates algorithm
+    const shuffled = shuffleArray([...randomizedSections]);
     
     // Store the randomized order
-    formData.sectionOrder = shuffled.map((pageId, index) => {
-        const sectionNum = pageId.replace('page-section', '');
+    formData.sectionOrder = shuffled.map((section, index) => {
+        const sectionNum = section[1].replace('page-section', '');
         return `Section${sectionNum}`;
     });
     
-    // Add shuffled pages to the pages array
-    pages = pages.concat(shuffled);
+    // Flatten and add shuffled pages to the pages array
+    shuffled.forEach(section => {
+        pages.push(section[0]); // description page
+        pages.push(section[1]); // activity page
+    });
     
     // Add final page at the end
     pages.push('page-final');
     
-    // Setup next buttons for randomized pages
-    shuffled.forEach((pageId, index) => {
+    // Setup next buttons for randomized activity pages (description pages use onclick in HTML)
+    shuffled.forEach((section, index) => {
+        const pageId = section[1]; // activity page
         const page = document.getElementById(pageId);
         const form = page.querySelector('form');
         const nextBtn = form.querySelector('.next-btn');

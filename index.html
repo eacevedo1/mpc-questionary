@@ -196,7 +196,33 @@
                 </form>
             </div>
 
-            <!-- Page 3: Task 1 (will be randomized) -->
+            <!-- Page 3a: Task 1 Description (will be randomized) -->
+            <div class="page hidden randomized-page" id="page-section1-description" data-section="1">
+                <h1>TASK 1: Pitch Discrimination for Isolated Tones</h1>
+                <p class="subtitle">Instructions</p>
+                
+                <div class="task-instructions">
+                    <p>You will hear <strong>TWO piano tones</strong> in each trial.</p>
+                    
+                    <p>First, you will hear a <strong>REFERENCE</strong> tone.<br>
+                    After a short silence, you will hear a <strong>COMPARISON</strong> tone.</p>
+                    
+                    <p>Please decide whether the <strong>COMPARISON</strong> tone is:</p>
+                    <ul>
+                        <li><strong>SAME</strong> as the reference</li>
+                        <li><strong>HIGHER</strong> than the reference</li>
+                        <li><strong>LOWER</strong> than the reference</li>
+                    </ul>
+                    
+                    <p><strong>This task establishes your personal pitch-sensitivity baseline.</strong></p>
+                    
+                    <p>You will complete <strong>1 PRACTICE trial</strong> (with feedback), then <strong>6 test trials</strong>.</p>
+                </div>
+
+                <button class="nav-btn" onclick="nextPage()">Start Task 1</button>
+            </div>
+
+            <!-- Page 3b: Task 1 Activity (will be randomized) -->
             <div class="page hidden randomized-page" id="page-section1" data-section="1">
                 <h1>Task 1: Pitch Discrimination for Isolated Tones</h1>
                 <p class="subtitle">Listen carefully and respond</p>
@@ -244,7 +270,39 @@
                 </form>
             </div>
 
-            <!-- Page 4: Task 2 (will be randomized) -->
+            <!-- Page 4a: Task 2 Description (will be randomized) -->
+            <div class="page hidden randomized-page" id="page-section2-description" data-section="2">
+                <h1>TASK 2: Pitch Discrimination in a Familiar Melody ("Happy Birthday")</h1>
+                <p class="subtitle">Instructions</p>
+                
+                <div class="task-instructions">
+                    <p>You will hear the first phrase of <strong>'Happy Birthday'</strong>:</p>
+                    <p class="melody-notation">
+                        C4 – C4 – D4 – C4 – F4 – E4<br>
+                        (Ha - ppy - Birth - day - to - you)
+                    </p>
+                    
+                    <p>In each trial, you will hear:</p>
+                    <ol>
+                        <li>The <strong>NORMAL</strong> melody (reference)</li>
+                        <li>A short silence</li>
+                        <li>The melody again, but <strong>ONE note (D4 or F4)</strong> may be altered</li>
+                    </ol>
+                    
+                    <p>Please decide if the second melody sounds:</p>
+                    <ul>
+                        <li><strong>SAME</strong> (in tune, no change)</li>
+                        <li><strong>HIGHER</strong> (one note is too high)</li>
+                        <li><strong>LOWER</strong> (one note is too low)</li>
+                    </ul>
+                    
+                    <p>You will complete <strong>1 PRACTICE trial</strong> (with feedback), then <strong>6 test trials</strong>.</p>
+                </div>
+
+                <button class="nav-btn" onclick="nextPage()">Start Task 2</button>
+            </div>
+
+            <!-- Page 4b: Task 2 Activity (will be randomized) -->
             <div class="page hidden randomized-page" id="page-section2" data-section="2">
                 <h1>Task 2: Pitch Discrimination in a Familiar Melody</h1>
                 <p class="subtitle">"Happy Birthday"</p>
@@ -286,7 +344,40 @@
                 </form>
             </div>
 
-            <!-- Page 5: Task 3 (will be randomized) -->
+            <!-- Page 5a: Task 3 Description (will be randomized) -->
+            <div class="page hidden randomized-page" id="page-section3-description" data-section="3">
+                <h1>TASK 3: Pitch Discrimination in an Unfamiliar Melody</h1>
+                <p class="subtitle">Instructions</p>
+                
+                <div class="task-instructions">
+                    
+                    <p>You will hear:</p>
+                    <p class="melody-notation">
+                        E4 – C4 – F4 – D4 – C4 – E4<br>
+                        (Same notes as Happy Birthday, but in a different order)
+                    </p>
+                    
+                    <p>In each trial, you will hear:</p>
+                    <ol>
+                        <li>The <strong>NORMAL</strong> melody (reference)</li>
+                        <li>A short silence</li>
+                        <li>The melody again, but <strong>ONE note (D4 or F4)</strong> may be altered</li>
+                    </ol>
+                    
+                    <p>Please decide if the second melody sounds:</p>
+                    <ul>
+                        <li><strong>SAME</strong> (in tune, no change)</li>
+                        <li><strong>HIGHER</strong> (one note is too high)</li>
+                        <li><strong>LOWER</strong> (one note is too low)</li>
+                    </ul>
+                    
+                    <p>You will complete <strong>1 PRACTICE trial</strong> (with feedback), then <strong>6 test trials</strong>.</p>
+                </div>
+
+                <button class="nav-btn" onclick="nextPage()">Start Task 3</button>
+            </div>
+
+            <!-- Page 5b: Task 3 Activity (will be randomized) -->
             <div class="page hidden randomized-page" id="page-section3" data-section="3">
                 <h1>Task 3: Pitch Discrimination in an Unfamiliar Melody</h1>
                 <p class="subtitle">Listen carefully and respond</p>
