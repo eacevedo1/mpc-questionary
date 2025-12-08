@@ -475,11 +475,11 @@
                         (Ha - ppy - Birth - day - to - you)
                     </p>
                     
-                    <p>In each trial, you will hear:</p>
+                    <p>In each trial, you will hear the melody <strong>TWICE</strong>:</p>
                     <ol>
-                        <li>The <strong>NORMAL</strong> melody (reference)</li>
+                        <li>First: The <strong>NORMAL</strong> melody (reference)</li>
                         <li>A short silence</li>
-                        <li>The melody again, but <strong>ONE note (D4 or F4)</strong> may be altered</li>
+                        <li>Second: The melody again, but <strong>ONE note</strong> (either the <strong>3rd note "D4"</strong> or the <strong>5th note "F4"</strong>) may be altered</li>
                     </ol>
                     
                     <p>Please decide if the second melody sounds:</p>
@@ -489,50 +489,257 @@
                         <li><strong>LOWER</strong> (one note is too low)</li>
                     </ul>
                     
+                    <p><strong>Tip:</strong> Each trial will tell you which note to pay attention to (3rd or 5th).</p>
+                    
                     <p>You will complete <strong>1 PRACTICE trial</strong> (with feedback), then <strong>6 test trials</strong>.</p>
                 </div>
 
                 <button class="nav-btn" onclick="nextPage()">Start Task 2</button>
             </div>
 
-            <!-- Page 4b: Task 2 Activity (will be randomized) -->
-            <div class="page hidden randomized-page" id="page-section2" data-section="2">
-                <h1>Task 2: Pitch Discrimination in a Familiar Melody</h1>
-                <p class="subtitle">"Happy Birthday"</p>
+            <!-- Page 4b: Task 2 Practice Trial -->
+            <div class="page hidden randomized-page" id="page-section2-practice" data-section="2">
+                <h1>Task 2: Practice Trial</h1>
+                <p class="subtitle">🎯 Trial with Feedback</p>
                 
-                <div class="task-description">
-                    <p>You will hear short excerpts of the melody "Happy Birthday."</p>
-                    <p>Two tones inside the melody may be slightly altered in pitch.</p>
-                    <p>After each example, indicate whether you heard a pitch change.</p>
-                    <p>If you did hear a change, indicate whether the altered tone was higher or lower than normal.</p>
+                <div class="trial-info">
+                    <p><strong>This is a practice trial.</strong> You will receive feedback on your answer.</p>
+                    <p id="task2-practice-hint">Listen carefully and decide if the melody sounds SAME, HIGHER, or LOWER.</p>
                 </div>
 
                 <div class="audio-player">
-                    <audio controls>
-                        <source src="data/flute_1.wav" type="audio/wav">
+                    <audio id="audio-task2-practice" controls>
+                        <source src="" type="audio/wav">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
                 
-                <form id="section2Form">
+                <form id="section2PracticeForm">
                     <div class="form-group">
-                        <label>Did you hear a pitch change?</label>
+                        <label>Your response:</label>
                         <div class="radio-group">
                             <label class="radio-label">
-                                <input type="radio" name="melodyResponse" value="Same" required>
+                                <input type="radio" name="melodyResponsePractice" value="Same" required>
                                 SAME
                             </label>
                             <label class="radio-label">
-                                <input type="radio" name="melodyResponse" value="Higher">
+                                <input type="radio" name="melodyResponsePractice" value="Higher">
                                 HIGHER
                             </label>
                             <label class="radio-label">
-                                <input type="radio" name="melodyResponse" value="Lower">
+                                <input type="radio" name="melodyResponsePractice" value="Lower">
                                 LOWER
                             </label>
                         </div>
                     </div>
 
+                    <div id="practice-feedback-task2" class="feedback-message hidden"></div>
+
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <!-- Task 2 Test Trials -->
+            <div class="page hidden randomized-page" id="page-section2-trial1" data-section="2">
+                <h1>Task 2: Trial 1 of 6</h1>
+                <p class="subtitle">"Happy Birthday"</p>
+                <p class="trial-hint" id="task2-trial1-hint"></p>
+                
+                <div class="audio-player">
+                    <audio id="audio-task2-trial1" controls>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <form id="section2Trial1Form">
+                    <div class="form-group">
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse1" value="Same" required>
+                                SAME
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse1" value="Higher">
+                                HIGHER
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse1" value="Lower">
+                                LOWER
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <div class="page hidden randomized-page" id="page-section2-trial2" data-section="2">
+                <h1>Task 2: Trial 2 of 6</h1>
+                <p class="subtitle">"Happy Birthday"</p>
+                <p class="trial-hint" id="task2-trial2-hint"></p>
+                
+                <div class="audio-player">
+                    <audio id="audio-task2-trial2" controls>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <form id="section2Trial2Form">
+                    <div class="form-group">
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse2" value="Same" required>
+                                SAME
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse2" value="Higher">
+                                HIGHER
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse2" value="Lower">
+                                LOWER
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <div class="page hidden randomized-page" id="page-section2-trial3" data-section="2">
+                <h1>Task 2: Trial 3 of 6</h1>
+                <p class="subtitle">"Happy Birthday"</p>
+                <p class="trial-hint" id="task2-trial3-hint"></p>
+                
+                <div class="audio-player">
+                    <audio id="audio-task2-trial3" controls>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <form id="section2Trial3Form">
+                    <div class="form-group">
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse3" value="Same" required>
+                                SAME
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse3" value="Higher">
+                                HIGHER
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse3" value="Lower">
+                                LOWER
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <div class="page hidden randomized-page" id="page-section2-trial4" data-section="2">
+                <h1>Task 2: Trial 4 of 6</h1>
+                <p class="subtitle">"Happy Birthday"</p>
+                <p class="trial-hint" id="task2-trial4-hint"></p>
+                
+                <div class="audio-player">
+                    <audio id="audio-task2-trial4" controls>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <form id="section2Trial4Form">
+                    <div class="form-group">
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse4" value="Same" required>
+                                SAME
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse4" value="Higher">
+                                HIGHER
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse4" value="Lower">
+                                LOWER
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <div class="page hidden randomized-page" id="page-section2-trial5" data-section="2">
+                <h1>Task 2: Trial 5 of 6</h1>
+                <p class="subtitle">"Happy Birthday"</p>
+                <p class="trial-hint" id="task2-trial5-hint"></p>
+                
+                <div class="audio-player">
+                    <audio id="audio-task2-trial5" controls>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <form id="section2Trial5Form">
+                    <div class="form-group">
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse5" value="Same" required>
+                                SAME
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse5" value="Higher">
+                                HIGHER
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse5" value="Lower">
+                                LOWER
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="nav-btn next-btn">Next</button>
+                </form>
+            </div>
+
+            <div class="page hidden randomized-page" id="page-section2-trial6" data-section="2">
+                <h1>Task 2: Trial 6 of 6</h1>
+                <p class="subtitle">"Happy Birthday"</p>
+                <p class="trial-hint" id="task2-trial6-hint"></p>
+                
+                <div class="audio-player">
+                    <audio id="audio-task2-trial6" controls>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <form id="section2Trial6Form">
+                    <div class="form-group">
+                        <label>Your response:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse6" value="Same" required>
+                                SAME
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse6" value="Higher">
+                                HIGHER
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="melodyResponse6" value="Lower">
+                                LOWER
+                            </label>
+                        </div>
+                    </div>
                     <button type="button" class="nav-btn next-btn">Next</button>
                 </form>
             </div>

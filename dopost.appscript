@@ -25,10 +25,20 @@
  * AQ-AV: Trial 6 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
  * AW-BB: Trial 7 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
  * 
- * BC: Task 2 Response
- * BD: Task 3 Response
- * BE: Feedback
- * BF: Completion Timestamp
+ * BC: Task 2 Accuracy
+ * 
+ * Task 2 Trials (Practice + 6 Test Trials) - 7 columns per trial:
+ * BD-BJ: Trial 1 (Practice) - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * BK-BQ: Trial 2 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * BR-BX: Trial 3 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * BY-CE: Trial 4 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * CF-CL: Trial 5 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * CM-CS: Trial 6 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * CT-CZ: Trial 7 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * 
+ * DA: Task 3 Response
+ * DB: Feedback
+ * DC: Completion Timestamp
  */
 
 function doPost(e) {
@@ -40,6 +50,9 @@ function doPost(e) {
     
     // Parse Task 1 trials
     const task1Trials = JSON.parse(data.task1Details || '[]');
+    
+    // Parse Task 2 trials
+    const task2Trials = JSON.parse(data.task2Details || '[]');
     
     // Create base row with demographics
     const row = [
@@ -76,9 +89,32 @@ function doPost(e) {
       }
     }
     
+    // Add Task 2 accuracy
+    row.push(data.task2Accuracy || '');
+    
+    // Add Task 2 trial data (7 trials: 1 practice + 6 test)
+    // For each trial: audioFile, note, notePosition, userResponse, correctAnswer, correct, startTime, responseTime
+    for (let i = 0; i < 7; i++) {
+      if (task2Trials[i]) {
+        const trial = task2Trials[i];
+        row.push(
+          trial.audioFile || '',
+          trial.note || '',
+          trial.notePosition || '',
+          trial.userResponse || '',
+          trial.correctAnswer || '',
+          trial.correct ? 'Correct' : 'Incorrect',
+          trial.startTimestamp ? new Date(trial.startTimestamp) : '',
+          trial.responseTimestamp ? new Date(trial.responseTimestamp) : ''
+        );
+      } else {
+        // Empty cells if trial doesn't exist
+        row.push('', '', '', '', '', '', '', '');
+      }
+    }
+    
     // Add remaining task data
     row.push(
-      data.task2Response || '',
       data.task3Response || '',
       data.feedback || '',
       new Date(data.completionTimestamp)
@@ -174,7 +210,70 @@ function setupHeaders() {
     'T1-6 Result',
     'T1-6 Start Time',
     'T1-6 Response Time',
-    'Task 2 Response',
+    'Task 2 Accuracy',
+    // Task 2 Practice Trial
+    'T2P Audio File',
+    'T2P Note',
+    'T2P Note Position',
+    'T2P User Response',
+    'T2P Correct Answer',
+    'T2P Result',
+    'T2P Start Time',
+    'T2P Response Time',
+    // Task 2 Test Trial 1
+    'T2-1 Audio File',
+    'T2-1 Note',
+    'T2-1 Note Position',
+    'T2-1 User Response',
+    'T2-1 Correct Answer',
+    'T2-1 Result',
+    'T2-1 Start Time',
+    'T2-1 Response Time',
+    // Task 2 Test Trial 2
+    'T2-2 Audio File',
+    'T2-2 Note',
+    'T2-2 Note Position',
+    'T2-2 User Response',
+    'T2-2 Correct Answer',
+    'T2-2 Result',
+    'T2-2 Start Time',
+    'T2-2 Response Time',
+    // Task 2 Test Trial 3
+    'T2-3 Audio File',
+    'T2-3 Note',
+    'T2-3 Note Position',
+    'T2-3 User Response',
+    'T2-3 Correct Answer',
+    'T2-3 Result',
+    'T2-3 Start Time',
+    'T2-3 Response Time',
+    // Task 2 Test Trial 4
+    'T2-4 Audio File',
+    'T2-4 Note',
+    'T2-4 Note Position',
+    'T2-4 User Response',
+    'T2-4 Correct Answer',
+    'T2-4 Result',
+    'T2-4 Start Time',
+    'T2-4 Response Time',
+    // Task 2 Test Trial 5
+    'T2-5 Audio File',
+    'T2-5 Note',
+    'T2-5 Note Position',
+    'T2-5 User Response',
+    'T2-5 Correct Answer',
+    'T2-5 Result',
+    'T2-5 Start Time',
+    'T2-5 Response Time',
+    // Task 2 Test Trial 6
+    'T2-6 Audio File',
+    'T2-6 Note',
+    'T2-6 Note Position',
+    'T2-6 User Response',
+    'T2-6 Correct Answer',
+    'T2-6 Result',
+    'T2-6 Start Time',
+    'T2-6 Response Time',
     'Task 3 Response',
     'Feedback',
     'Completion Timestamp'

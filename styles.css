@@ -490,3 +490,16 @@ select:focus {
 .feedback-message.hidden {
     display: none;
 }
+
+/* Trial Hint */
+.trial-hint {
+    background: #fef3c7;
+    border: 1.5px solid #fbbf24;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 16px 0;
+    color: #92400e;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+}
