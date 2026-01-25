@@ -454,16 +454,33 @@ select:focus {
  /* animation: l4 2s infinite steps(7);*/
 }
 .loader.playing {
-  animation: l4 2s infinite steps(7);
+  animation: l4 7.2s steps(13) forwards;
 }
 
 @keyframes l4 {
-  100% {
-    background-size: 116.666%;
-  }
+  0%   { background-size: 0%; }
+
+  /* Phrase 1 */
+  4.17%  { background-size: 16.666%; }  
+  6.94%  { background-size: 33.333%; }  
+  15.14% { background-size: 50%; }      
+  22.22% { background-size: 66.666%; }  
+  30.56% { background-size: 83.333%; }  
+  43.06% { background-size: 166.666%; } 
+
+  /* Silence reset */
+  56.94% { background-size: 0%; }
+
+  /* Phrase 2 — corrected */
+  60.56% { background-size: 16.666%; }  
+  63.89% { background-size: 33.333%; }  
+  71.53% { background-size: 50%; }
+  79.17% { background-size: 66.666%; }
+  87.08% { background-size: 83.333%; }
+  100%   { background-size: 166.666%; } 
 }
 
-.loader.note-active {
+.loader.playing.note-active {
   background: linear-gradient(#ff3b3b 0 0) 0/0% no-repeat #ddd;
 }
 
