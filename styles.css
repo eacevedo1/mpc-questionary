@@ -454,7 +454,7 @@ select:focus {
  /* animation: l4 2s infinite steps(7);*/
 }
 .loader.playing {
-  animation: l4 7.2s steps(13) forwards;
+  animation: l4 7.2s step-start forwards;
 }
 
 @keyframes l4 {
