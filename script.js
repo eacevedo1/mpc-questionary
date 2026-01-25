@@ -144,6 +144,49 @@ let task3SelectedTrials = [];
 let currentPageIndex = 0;
 let pages = [];
 
+// Timing and color configuration for highlighting notes
+function attachAudioLoader(audioElement, loaderElement, trialArray) {
+  if (!audioElement || !loaderElement || !trialArray) return;
+
+  // Avoid attaching multiple times
+  if (audioElement.dataset.highlightAttached) return;
+  audioElement.dataset.highlightAttached = "true";
+
+  let onTimeout = null;
+  let offTimeout = null;
+
+  function cleanup() {
+    clearTimeout(onTimeout);
+    clearTimeout(offTimeout);
+    loaderElement.classList.remove("note-active", "playing");
+  }
+
+  audioElement.addEventListener("play", () => {
+    cleanup();
+    loaderElement.classList.add("playing");
+
+    const currentFile = audioElement.querySelector("source")?.src?.split("/").pop();
+    const trial = trialArray.find(t => t.file === currentFile);
+    if (!trial) return;
+
+    const timing = NOTE_TIMING?.[trial.notePosition];
+    if (!timing) return;
+
+    // Turn loader red at note start
+    onTimeout = setTimeout(() => {
+      loaderElement.classList.add("note-active");
+    }, timing.start * 1000);
+
+    // Revert loader after note duration
+    offTimeout = setTimeout(() => {
+      loaderElement.classList.remove("note-active");
+    }, (timing.start + timing.duration) * 1000);
+  });
+
+  audioElement.addEventListener("pause", cleanup);
+  audioElement.addEventListener("ended", cleanup);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     initializeQuestionnaire();
 });
@@ -195,6 +238,43 @@ function initializePages() {
     ];
     currentPageIndex = 0;
 }
+
+function initializeTaskLoaders() {
+  // Task 2 practice
+  attachAudioLoader(
+    document.getElementById("audio-task2-practice"),
+    document.querySelector("#page-section2-practice .loader"),
+    task2SelectedTrials
+  );
+
+  // Task 2 test trials
+  for (let i = 1; i <= 6; i++) {
+    attachAudioLoader(
+      document.getElementById(`audio-task2-trial${i}`),
+      document.querySelector(`#page-section2-trial${i} .loader`),
+      task2SelectedTrials
+    );
+  }
+
+  // Task 3 practice
+  attachAudioLoader(
+    document.getElementById("audio-task3-practice"),
+    document.querySelector("#page-section3-practice .loader"),
+    task3SelectedTrials
+  );
+
+  // Task 3 test trials
+  for (let i = 1; i <= 6; i++) {
+    attachAudioLoader(
+      document.getElementById(`audio-task3-trial${i}`),
+      document.querySelector(`#page-section3-trial${i} .loader`),
+      task3SelectedTrials
+    );
+  }
+}
+
+// Initialize after DOM is loaded
+document.addEventListener("DOMContentLoaded", initializeTaskLoaders);
 
 function setupRandomizedPages() {
     // Select 9 random audio files for Task 1 (3 practice + 6 test trials)
@@ -266,25 +346,18 @@ function setupRandomizedPages() {
         ['page-section3-description', 'page-section3-practice1', 'page-section3-practice2', 'page-section3-practice3', 'page-section3-trial1', 'page-section3-trial2', 'page-section3-trial3', 'page-section3-trial4', 'page-section3-trial5', 'page-section3-trial6']
     ];
     
-    // Shuffle the sections using Fisher-Yates algorithm
-    const shuffled = shuffleArray([...randomizedSections]);
-    
-    // Store the randomized order
-    formData.sectionOrder = shuffled.map((section, index) => {
-        const firstPage = section[0];
-        const sectionNum = firstPage.replace('page-section', '').replace('-description', '');
-        return `Section${sectionNum}`;
-    });
-    
-    // Flatten and add shuffled pages to the pages array
+    // Keep sections in fixed order
+    const shuffled = randomizedSections; // don't shuffle tasks
+
+    // Flatten pages into main pages array
     shuffled.forEach(section => {
-        section.forEach(pageId => {
-            pages.push(pageId);
-        });
-    });
-    
-    // Add final page at the end
-    pages.push('page-final');
+  section.forEach(pageId => {
+    pages.push(pageId);
+  });
+});
+
+// Add final page at the end
+pages.push('page-final');
     
     // Setup Task 1 pages
     setupTask1Pages();
@@ -421,8 +494,12 @@ function setupTask2Pages() {
         const practiceFolder = task2SelectedTrials[p].note === 'D4' ? 'task2_melody_D4' : 'task2_melody_F4';
         practiceAudio.querySelector('source').src = `data/${practiceFolder}/${task2SelectedTrials[p].file}`;
         practiceAudio.load();
-        practiceHint.innerHTML = `<strong>Pay attention to the ${task2SelectedTrials[p].notePosition} note (${task2SelectedTrials[p].note})</strong> - "Birth" in the phrase.`;
-        
+        if (task2SelectedTrials[p].notePosition === '3rd') {
+            practiceHint.innerHTML = `<strong>Pay attention to the ${task2SelectedTrials[p].notePosition} note (${task2SelectedTrials[p].note})</strong> - "Birth" in the phrase.`;
+        } else {
+            practiceHint.innerHTML = `<strong>Pay attention to the ${task2SelectedTrials[p].notePosition} note (${task2SelectedTrials[p].note})</strong> - "To" in the phrase.`;
+        }
+
         // Track when trial starts
         let practiceStartTime = null;
         const practiceObserver = new MutationObserver(() => {
