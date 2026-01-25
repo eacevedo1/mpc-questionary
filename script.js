@@ -197,9 +197,16 @@ function initializePages() {
 }
 
 function setupRandomizedPages() {
-    // Select 7 random audio files for Task 1 (1 practice + 6 test trials)
+    // Select 9 random audio files for Task 1 (3 practice + 6 test trials)
     const shuffledAudio = shuffleArray([...task1AudioFiles]);
-    task1SelectedTrials = shuffledAudio.slice(0, 7);
+    const selectedTask1 = shuffledAudio.slice(0, 9);
+    
+    // Sort first 3 trials for practice: big to moderate differences
+    const practiceTrials = selectedTask1.slice(0, 3).sort((a, b) => 
+        Math.abs(b.delta) - Math.abs(a.delta)
+    );
+    const testTrials = selectedTask1.slice(3, 9);
+    task1SelectedTrials = [...practiceTrials, ...testTrials];
     
     // Store the selected trials for later analysis
     formData.task1AudioFiles = task1SelectedTrials.map(trial => ({
@@ -208,11 +215,18 @@ function setupRandomizedPages() {
         correctAnswer: trial.correctAnswer
     }));
     
-    // Select 7 random audio files for Task 2 (1 practice + 6 test trials)
+    // Select 9 random audio files for Task 2 (3 practice + 6 test trials)
     // Mix D4 and F4 alterations randomly
     const allTask2Files = [...task2AudioFilesD4, ...task2AudioFilesF4];
     const shuffledTask2Audio = shuffleArray(allTask2Files);
-    task2SelectedTrials = shuffledTask2Audio.slice(0, 7);
+    const selectedTask2 = shuffledTask2Audio.slice(0, 9);
+    
+    // Sort first 3 trials for practice: big to moderate differences
+    const task2PracticeTrials = selectedTask2.slice(0, 3).sort((a, b) => 
+        Math.abs(b.delta) - Math.abs(a.delta)
+    );
+    const task2TestTrials = selectedTask2.slice(3, 9);
+    task2SelectedTrials = [...task2PracticeTrials, ...task2TestTrials];
     
     // Store the selected trials for later analysis
     formData.task2AudioFiles = task2SelectedTrials.map(trial => ({
@@ -223,11 +237,18 @@ function setupRandomizedPages() {
         notePosition: trial.notePosition
     }));
     
-    // Select 7 random audio files for Task 3 (1 practice + 6 test trials)
+    // Select 9 random audio files for Task 3 (3 practice + 6 test trials)
     // Mix D4 and F4 alterations randomly
     const allTask3Files = [...task3AudioFilesD4, ...task3AudioFilesF4];
     const shuffledTask3Audio = shuffleArray(allTask3Files);
-    task3SelectedTrials = shuffledTask3Audio.slice(0, 7);
+    const selectedTask3 = shuffledTask3Audio.slice(0, 9);
+    
+    // Sort first 3 trials for practice: big to moderate differences
+    const task3PracticeTrials = selectedTask3.slice(0, 3).sort((a, b) => 
+        Math.abs(b.delta) - Math.abs(a.delta)
+    );
+    const task3TestTrials = selectedTask3.slice(3, 9);
+    task3SelectedTrials = [...task3PracticeTrials, ...task3TestTrials];
     
     // Store the selected trials for later analysis
     formData.task3AudioFiles = task3SelectedTrials.map(trial => ({
@@ -238,11 +259,11 @@ function setupRandomizedPages() {
         notePosition: trial.notePosition
     }));
     
-    // Get all randomized section pages (now each section has description + activity page)
+    // Get all randomized section pages (now each section has description + 3 practice + 6 test trials)
     const randomizedSections = [
-        ['page-section1-description', 'page-section1-practice', 'page-section1-trial1', 'page-section1-trial2', 'page-section1-trial3', 'page-section1-trial4', 'page-section1-trial5', 'page-section1-trial6'],
-        ['page-section2-description', 'page-section2-practice', 'page-section2-trial1', 'page-section2-trial2', 'page-section2-trial3', 'page-section2-trial4', 'page-section2-trial5', 'page-section2-trial6'],
-        ['page-section3-description', 'page-section3-practice', 'page-section3-trial1', 'page-section3-trial2', 'page-section3-trial3', 'page-section3-trial4', 'page-section3-trial5', 'page-section3-trial6']
+        ['page-section1-description', 'page-section1-practice1', 'page-section1-practice2', 'page-section1-practice3', 'page-section1-trial1', 'page-section1-trial2', 'page-section1-trial3', 'page-section1-trial4', 'page-section1-trial5', 'page-section1-trial6'],
+        ['page-section2-description', 'page-section2-practice1', 'page-section2-practice2', 'page-section2-practice3', 'page-section2-trial1', 'page-section2-trial2', 'page-section2-trial3', 'page-section2-trial4', 'page-section2-trial5', 'page-section2-trial6'],
+        ['page-section3-description', 'page-section3-practice1', 'page-section3-practice2', 'page-section3-practice3', 'page-section3-trial1', 'page-section3-trial2', 'page-section3-trial3', 'page-section3-trial4', 'page-section3-trial5', 'page-section3-trial6']
     ];
     
     // Shuffle the sections using Fisher-Yates algorithm
@@ -276,63 +297,69 @@ function setupRandomizedPages() {
 }
 
 function setupTask1Pages() {
-    // Setup practice trial
-    const practicePage = document.getElementById('page-section1-practice');
-    const practiceForm = document.getElementById('section1PracticeForm');
-    const practiceBtn = practiceForm.querySelector('.next-btn');
-    const practiceAudio = document.getElementById('audio-task1-practice');
-    
-    // Set practice audio
-    practiceAudio.querySelector('source').src = `data/task1_isolated_tones/${task1SelectedTrials[0].file}`;
-    practiceAudio.load();
-    
-    // Track when trial starts (when page is shown)
-    let practiceStartTime = null;
-    const practiceObserver = new MutationObserver(() => {
-        if (!practicePage.classList.contains('hidden') && !practiceStartTime) {
-            practiceStartTime = new Date().toISOString();
-        }
-    });
-    practiceObserver.observe(practicePage, { attributes: true, attributeFilter: ['class'] });
-    
-    practiceBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        if (validateForm(practiceForm)) {
-            const userResponse = document.querySelector('input[name="pitchResponsePractice"]:checked').value;
-            const correctAnswer = task1SelectedTrials[0].correctAnswer;
-            
-            // Show feedback
-            const feedbackDiv = document.getElementById('practice-feedback');
-            feedbackDiv.classList.remove('hidden');
-            
-            if (userResponse === correctAnswer) {
-                feedbackDiv.innerHTML = '✓ <strong>Correct!</strong> The comparison tone was ' + correctAnswer.toLowerCase() + '.';
-                feedbackDiv.style.color = '#28a745';
-            } else {
-                feedbackDiv.innerHTML = '✗ <strong>Not quite.</strong> The comparison tone was actually ' + correctAnswer.toLowerCase() + '. You answered: ' + userResponse.toLowerCase() + '.';
-                feedbackDiv.style.color = '#dc3545';
+    // Setup practice trials (3 trials sorted by delta: big to moderate)
+    for (let p = 0; p < 3; p++) {
+        const practiceNum = p + 1;
+        const practicePage = document.getElementById(`page-section1-practice${practiceNum}`);
+        const practiceForm = document.getElementById(`section1Practice${practiceNum}Form`);
+        const practiceBtn = practiceForm.querySelector('.next-btn');
+        const practiceAudio = document.getElementById(`audio-task1-practice${practiceNum}`);
+        
+        // Set practice audio
+        practiceAudio.querySelector('source').src = `data/task1_isolated_tones/${task1SelectedTrials[p].file}`;
+        practiceAudio.load();
+        
+        // Track when trial starts (when page is shown)
+        let practiceStartTime = null;
+        const practiceObserver = new MutationObserver(() => {
+            if (!practicePage.classList.contains('hidden') && !practiceStartTime) {
+                practiceStartTime = new Date().toISOString();
             }
-            
-            // Save practice data
-            formData.task1Trials.push({
-                trialType: 'practice',
-                audioFile: task1SelectedTrials[0].file,
-                delta: task1SelectedTrials[0].delta,
-                correctAnswer: correctAnswer,
-                userResponse: userResponse,
-                correct: userResponse === correctAnswer,
-                startTimestamp: practiceStartTime,
-                responseTimestamp: new Date().toISOString()
-            });
-            
-            // Change button text and proceed on second click
-            if (practiceBtn.textContent === 'Next') {
-                practiceBtn.textContent = 'Continue to Test Trials';
-            } else {
-                nextPage();
+        });
+        practiceObserver.observe(practicePage, { attributes: true, attributeFilter: ['class'] });
+        
+        practiceBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (validateForm(practiceForm)) {
+                const userResponse = document.querySelector(`input[name="pitchResponsePractice${practiceNum}"]:checked`).value;
+                const correctAnswer = task1SelectedTrials[p].correctAnswer;
+                
+                // Show feedback
+                const feedbackDiv = document.getElementById(`practice-feedback-${practiceNum}`);
+                feedbackDiv.classList.remove('hidden');
+                
+                if (userResponse === correctAnswer) {
+                    feedbackDiv.innerHTML = '✓ <strong>Correct!</strong> The comparison tone was ' + correctAnswer.toLowerCase() + '.';
+                    feedbackDiv.style.color = '#28a745';
+                } else {
+                    feedbackDiv.innerHTML = '✗ <strong>Not quite.</strong> The comparison tone was actually ' + correctAnswer.toLowerCase() + '. You answered: ' + userResponse.toLowerCase() + '.';
+                    feedbackDiv.style.color = '#dc3545';
+                }
+                
+                // Save practice data
+                formData.task1Trials.push({
+                    trialType: 'practice',
+                    practiceNumber: practiceNum,
+                    audioFile: task1SelectedTrials[p].file,
+                    delta: task1SelectedTrials[p].delta,
+                    correctAnswer: correctAnswer,
+                    userResponse: userResponse,
+                    correct: userResponse === correctAnswer,
+                    startTimestamp: practiceStartTime,
+                    responseTimestamp: new Date().toISOString()
+                });
+                
+                // First click shows feedback; second click advances
+                if (practiceBtn.dataset.feedbackShown === 'true') {
+                    nextPage();
+                    return;
+                }
+
+                practiceBtn.dataset.feedbackShown = 'true';
+                practiceBtn.textContent = practiceNum === 3 ? 'Continue to Test Trials' : 'Next Practice';
             }
-        }
-    });
+        });
+    }
     
     // Setup test trials
     for (let i = 1; i <= 6; i++) {
@@ -341,8 +368,8 @@ function setupTask1Pages() {
         const trialBtn = trialForm.querySelector('.next-btn');
         const trialAudio = document.getElementById(`audio-task1-trial${i}`);
         
-        // Set audio for this trial
-        trialAudio.querySelector('source').src = `data/task1_isolated_tones/${task1SelectedTrials[i].file}`;
+        // Set audio for this trial (offset by 3 practice trials)
+        trialAudio.querySelector('source').src = `data/task1_isolated_tones/${task1SelectedTrials[i + 2].file}`;
         trialAudio.load();
         
         // Track when trial starts (when page is shown)
@@ -359,14 +386,14 @@ function setupTask1Pages() {
             e.preventDefault();
             if (validateForm(trialForm)) {
                 const userResponse = document.querySelector(`input[name="pitchResponse${i}"]:checked`).value;
-                const correctAnswer = task1SelectedTrials[i].correctAnswer;
+                const correctAnswer = task1SelectedTrials[i + 2].correctAnswer;
                 
                 // Save trial data
                 formData.task1Trials.push({
                     trialType: 'test',
                     trialNumber: i,
-                    audioFile: task1SelectedTrials[i].file,
-                    delta: task1SelectedTrials[i].delta,
+                    audioFile: task1SelectedTrials[i + 2].file,
+                    delta: task1SelectedTrials[i + 2].delta,
                     correctAnswer: correctAnswer,
                     userResponse: userResponse,
                     correct: userResponse === correctAnswer,
@@ -381,68 +408,74 @@ function setupTask1Pages() {
 }
 
 function setupTask2Pages() {
-    // Setup practice trial
-    const practicePage = document.getElementById('page-section2-practice');
-    const practiceForm = document.getElementById('section2PracticeForm');
-    const practiceBtn = practiceForm.querySelector('.next-btn');
-    const practiceAudio = document.getElementById('audio-task2-practice');
-    const practiceHint = document.getElementById('task2-practice-hint');
-    
-    // Set practice audio and hint
-    const practiceFolder = task2SelectedTrials[0].note === 'D4' ? 'task2_melody_D4' : 'task2_melody_F4';
-    practiceAudio.querySelector('source').src = `data/${practiceFolder}/${task2SelectedTrials[0].file}`;
-    practiceAudio.load();
-    practiceHint.innerHTML = `<strong>Pay attention to the ${task2SelectedTrials[0].notePosition} note (${task2SelectedTrials[0].note})</strong> - "Birth" in the phrase.`;
-    
-    // Track when trial starts
-    let practiceStartTime = null;
-    const practiceObserver = new MutationObserver(() => {
-        if (!practicePage.classList.contains('hidden') && !practiceStartTime) {
-            practiceStartTime = new Date().toISOString();
-        }
-    });
-    practiceObserver.observe(practicePage, { attributes: true, attributeFilter: ['class'] });
-    
-    practiceBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        if (validateForm(practiceForm)) {
-            const userResponse = document.querySelector('input[name="melodyResponsePractice"]:checked').value;
-            const correctAnswer = task2SelectedTrials[0].correctAnswer;
-            
-            // Show feedback
-            const feedbackDiv = document.getElementById('practice-feedback-task2');
-            feedbackDiv.classList.remove('hidden');
-            
-            if (userResponse === correctAnswer) {
-                feedbackDiv.innerHTML = '✓ <strong>Correct!</strong> The melody was ' + correctAnswer.toLowerCase() + '.';
-                feedbackDiv.style.color = '#28a745';
-            } else {
-                feedbackDiv.innerHTML = '✗ <strong>Not quite.</strong> The melody was actually ' + correctAnswer.toLowerCase() + '. You answered: ' + userResponse.toLowerCase() + '.';
-                feedbackDiv.style.color = '#dc3545';
+    // Setup practice trials (3 trials sorted by delta: big to moderate)
+    for (let p = 0; p < 3; p++) {
+        const practiceNum = p + 1;
+        const practicePage = document.getElementById(`page-section2-practice${practiceNum}`);
+        const practiceForm = document.getElementById(`section2Practice${practiceNum}Form`);
+        const practiceBtn = practiceForm.querySelector('.next-btn');
+        const practiceAudio = document.getElementById(`audio-task2-practice${practiceNum}`);
+        const practiceHint = document.getElementById(`task2-practice${practiceNum}-hint`);
+        
+        // Set practice audio and hint
+        const practiceFolder = task2SelectedTrials[p].note === 'D4' ? 'task2_melody_D4' : 'task2_melody_F4';
+        practiceAudio.querySelector('source').src = `data/${practiceFolder}/${task2SelectedTrials[p].file}`;
+        practiceAudio.load();
+        practiceHint.innerHTML = `<strong>Pay attention to the ${task2SelectedTrials[p].notePosition} note (${task2SelectedTrials[p].note})</strong> - "Birth" in the phrase.`;
+        
+        // Track when trial starts
+        let practiceStartTime = null;
+        const practiceObserver = new MutationObserver(() => {
+            if (!practicePage.classList.contains('hidden') && !practiceStartTime) {
+                practiceStartTime = new Date().toISOString();
             }
-            
-            // Save practice data
-            formData.task2Trials.push({
-                trialType: 'practice',
-                audioFile: task2SelectedTrials[0].file,
-                delta: task2SelectedTrials[0].delta,
-                note: task2SelectedTrials[0].note,
-                notePosition: task2SelectedTrials[0].notePosition,
-                correctAnswer: correctAnswer,
-                userResponse: userResponse,
-                correct: userResponse === correctAnswer,
-                startTimestamp: practiceStartTime,
-                responseTimestamp: new Date().toISOString()
-            });
-            
-            // Change button text and proceed on second click
-            if (practiceBtn.textContent === 'Next') {
-                practiceBtn.textContent = 'Continue to Test Trials';
-            } else {
-                nextPage();
+        });
+        practiceObserver.observe(practicePage, { attributes: true, attributeFilter: ['class'] });
+        
+        practiceBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (validateForm(practiceForm)) {
+                const userResponse = document.querySelector(`input[name="melodyResponsePractice${practiceNum}"]:checked`).value;
+                const correctAnswer = task2SelectedTrials[p].correctAnswer;
+                
+                // Show feedback
+                const feedbackDiv = document.getElementById(`practice-feedback-task2-${practiceNum}`);
+                feedbackDiv.classList.remove('hidden');
+                
+                if (userResponse === correctAnswer) {
+                    feedbackDiv.innerHTML = '✓ <strong>Correct!</strong> The melody was ' + correctAnswer.toLowerCase() + '.';
+                    feedbackDiv.style.color = '#28a745';
+                } else {
+                    feedbackDiv.innerHTML = '✗ <strong>Not quite.</strong> The melody was actually ' + correctAnswer.toLowerCase() + '. You answered: ' + userResponse.toLowerCase() + '.';
+                    feedbackDiv.style.color = '#dc3545';
+                }
+                
+                // Save practice data
+                formData.task2Trials.push({
+                    trialType: 'practice',
+                    practiceNumber: practiceNum,
+                    audioFile: task2SelectedTrials[p].file,
+                    delta: task2SelectedTrials[p].delta,
+                    note: task2SelectedTrials[p].note,
+                    notePosition: task2SelectedTrials[p].notePosition,
+                    correctAnswer: correctAnswer,
+                    userResponse: userResponse,
+                    correct: userResponse === correctAnswer,
+                    startTimestamp: practiceStartTime,
+                    responseTimestamp: new Date().toISOString()
+                });
+                
+                // First click shows feedback; second click advances
+                if (practiceBtn.dataset.feedbackShown === 'true') {
+                    nextPage();
+                    return;
+                }
+
+                practiceBtn.dataset.feedbackShown = 'true';
+                practiceBtn.textContent = practiceNum === 3 ? 'Continue to Test Trials' : 'Next Practice';
             }
-        }
-    });
+        });
+    }
     
     // Setup test trials
     for (let i = 1; i <= 6; i++) {
@@ -452,13 +485,13 @@ function setupTask2Pages() {
         const trialAudio = document.getElementById(`audio-task2-trial${i}`);
         const trialHint = document.getElementById(`task2-trial${i}-hint`);
         
-        // Set audio for this trial
-        const trialFolder = task2SelectedTrials[i].note === 'D4' ? 'task2_melody_D4' : 'task2_melody_F4';
-        trialAudio.querySelector('source').src = `data/${trialFolder}/${task2SelectedTrials[i].file}`;
+        // Set audio for this trial (offset by 3 practice trials)
+        const trialFolder = task2SelectedTrials[i + 2].note === 'D4' ? 'task2_melody_D4' : 'task2_melody_F4';
+        trialAudio.querySelector('source').src = `data/${trialFolder}/${task2SelectedTrials[i + 2].file}`;
         trialAudio.load();
         
         // Set hint based on which note is being modified
-        trialHint.textContent = `💡 Pay attention to the ${task2SelectedTrials[i].notePosition} note (${task2SelectedTrials[i].note})`;
+        trialHint.textContent = `💡 Pay attention to the ${task2SelectedTrials[i + 2].notePosition} note (${task2SelectedTrials[i + 2].note})`;
         
         // Track when trial starts
         let trialStartTime = null;
@@ -474,16 +507,16 @@ function setupTask2Pages() {
             e.preventDefault();
             if (validateForm(trialForm)) {
                 const userResponse = document.querySelector(`input[name="melodyResponse${i}"]:checked`).value;
-                const correctAnswer = task2SelectedTrials[i].correctAnswer;
+                const correctAnswer = task2SelectedTrials[i + 2].correctAnswer;
                 
                 // Save trial data
                 formData.task2Trials.push({
                     trialType: 'test',
                     trialNumber: i,
-                    audioFile: task2SelectedTrials[i].file,
-                    delta: task2SelectedTrials[i].delta,
-                    note: task2SelectedTrials[i].note,
-                    notePosition: task2SelectedTrials[i].notePosition,
+                    audioFile: task2SelectedTrials[i + 2].file,
+                    delta: task2SelectedTrials[i + 2].delta,
+                    note: task2SelectedTrials[i + 2].note,
+                    notePosition: task2SelectedTrials[i + 2].notePosition,
                     correctAnswer: correctAnswer,
                     userResponse: userResponse,
                     correct: userResponse === correctAnswer,
@@ -498,68 +531,74 @@ function setupTask2Pages() {
 }
 
 function setupTask3Pages() {
-    // Setup practice trial
-    const practicePage = document.getElementById('page-section3-practice');
-    const practiceForm = document.getElementById('section3PracticeForm');
-    const practiceBtn = practiceForm.querySelector('.next-btn');
-    const practiceAudio = document.getElementById('audio-task3-practice');
-    const practiceHint = document.getElementById('task3-practice-hint');
-    
-    // Set practice audio and hint
-    const practiceFolder = task3SelectedTrials[0].note === 'D4' ? 'task3_melody_D4' : 'task3_melody_F4';
-    practiceAudio.querySelector('source').src = `data/${practiceFolder}/${task3SelectedTrials[0].file}`;
-    practiceAudio.load();
-    practiceHint.innerHTML = `<strong>Pay attention to the ${task3SelectedTrials[0].notePosition} note (${task3SelectedTrials[0].note})</strong>`;
-    
-    // Track when trial starts
-    let practiceStartTime = null;
-    const practiceObserver = new MutationObserver(() => {
-        if (!practicePage.classList.contains('hidden') && !practiceStartTime) {
-            practiceStartTime = new Date().toISOString();
-        }
-    });
-    practiceObserver.observe(practicePage, { attributes: true, attributeFilter: ['class'] });
-    
-    practiceBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        if (validateForm(practiceForm)) {
-            const userResponse = document.querySelector('input[name="unfamiliarResponsePractice"]:checked').value;
-            const correctAnswer = task3SelectedTrials[0].correctAnswer;
-            
-            // Show feedback
-            const feedbackDiv = document.getElementById('practice-feedback-task3');
-            feedbackDiv.classList.remove('hidden');
-            
-            if (userResponse === correctAnswer) {
-                feedbackDiv.innerHTML = '✓ <strong>Correct!</strong> The melody was ' + correctAnswer.toLowerCase() + '.';
-                feedbackDiv.style.color = '#28a745';
-            } else {
-                feedbackDiv.innerHTML = '✗ <strong>Not quite.</strong> The melody was actually ' + correctAnswer.toLowerCase() + '. You answered: ' + userResponse.toLowerCase() + '.';
-                feedbackDiv.style.color = '#dc3545';
+    // Setup practice trials (3 trials sorted by delta: big to moderate)
+    for (let p = 0; p < 3; p++) {
+        const practiceNum = p + 1;
+        const practicePage = document.getElementById(`page-section3-practice${practiceNum}`);
+        const practiceForm = document.getElementById(`section3Practice${practiceNum}Form`);
+        const practiceBtn = practiceForm.querySelector('.next-btn');
+        const practiceAudio = document.getElementById(`audio-task3-practice${practiceNum}`);
+        const practiceHint = document.getElementById(`task3-practice${practiceNum}-hint`);
+        
+        // Set practice audio and hint
+        const practiceFolder = task3SelectedTrials[p].note === 'D4' ? 'task3_melody_D4' : 'task3_melody_F4';
+        practiceAudio.querySelector('source').src = `data/${practiceFolder}/${task3SelectedTrials[p].file}`;
+        practiceAudio.load();
+        practiceHint.innerHTML = `<strong>Pay attention to the ${task3SelectedTrials[p].notePosition} note (${task3SelectedTrials[p].note})</strong>`;
+        
+        // Track when trial starts
+        let practiceStartTime = null;
+        const practiceObserver = new MutationObserver(() => {
+            if (!practicePage.classList.contains('hidden') && !practiceStartTime) {
+                practiceStartTime = new Date().toISOString();
             }
-            
-            // Save practice data
-            formData.task3Trials.push({
-                trialType: 'practice',
-                audioFile: task3SelectedTrials[0].file,
-                delta: task3SelectedTrials[0].delta,
-                note: task3SelectedTrials[0].note,
-                notePosition: task3SelectedTrials[0].notePosition,
-                correctAnswer: correctAnswer,
-                userResponse: userResponse,
-                correct: userResponse === correctAnswer,
-                startTimestamp: practiceStartTime,
-                responseTimestamp: new Date().toISOString()
-            });
-            
-            // Change button text and proceed on second click
-            if (practiceBtn.textContent === 'Next') {
-                practiceBtn.textContent = 'Continue to Test Trials';
-            } else {
-                nextPage();
+        });
+        practiceObserver.observe(practicePage, { attributes: true, attributeFilter: ['class'] });
+        
+        practiceBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (validateForm(practiceForm)) {
+                const userResponse = document.querySelector(`input[name="unfamiliarResponsePractice${practiceNum}"]:checked`).value;
+                const correctAnswer = task3SelectedTrials[p].correctAnswer;
+                
+                // Show feedback
+                const feedbackDiv = document.getElementById(`practice-feedback-task3-${practiceNum}`);
+                feedbackDiv.classList.remove('hidden');
+                
+                if (userResponse === correctAnswer) {
+                    feedbackDiv.innerHTML = '✓ <strong>Correct!</strong> The melody was ' + correctAnswer.toLowerCase() + '.';
+                    feedbackDiv.style.color = '#28a745';
+                } else {
+                    feedbackDiv.innerHTML = '✗ <strong>Not quite.</strong> The melody was actually ' + correctAnswer.toLowerCase() + '. You answered: ' + userResponse.toLowerCase() + '.';
+                    feedbackDiv.style.color = '#dc3545';
+                }
+                
+                // Save practice data
+                formData.task3Trials.push({
+                    trialType: 'practice',
+                    practiceNumber: practiceNum,
+                    audioFile: task3SelectedTrials[p].file,
+                    delta: task3SelectedTrials[p].delta,
+                    note: task3SelectedTrials[p].note,
+                    notePosition: task3SelectedTrials[p].notePosition,
+                    correctAnswer: correctAnswer,
+                    userResponse: userResponse,
+                    correct: userResponse === correctAnswer,
+                    startTimestamp: practiceStartTime,
+                    responseTimestamp: new Date().toISOString()
+                });
+                
+                // First click shows feedback; second click advances
+                if (practiceBtn.dataset.feedbackShown === 'true') {
+                    nextPage();
+                    return;
+                }
+
+                practiceBtn.dataset.feedbackShown = 'true';
+                practiceBtn.textContent = practiceNum === 3 ? 'Continue to Test Trials' : 'Next Practice';
             }
-        }
-    });
+        });
+    }
     
     // Setup test trials
     for (let i = 1; i <= 6; i++) {
@@ -569,13 +608,13 @@ function setupTask3Pages() {
         const trialAudio = document.getElementById(`audio-task3-trial${i}`);
         const trialHint = document.getElementById(`task3-trial${i}-hint`);
         
-        // Set audio for this trial
-        const trialFolder = task3SelectedTrials[i].note === 'D4' ? 'task3_melody_D4' : 'task3_melody_F4';
-        trialAudio.querySelector('source').src = `data/${trialFolder}/${task3SelectedTrials[i].file}`;
+        // Set audio for this trial (offset by 3 practice trials)
+        const trialFolder = task3SelectedTrials[i + 2].note === 'D4' ? 'task3_melody_D4' : 'task3_melody_F4';
+        trialAudio.querySelector('source').src = `data/${trialFolder}/${task3SelectedTrials[i + 2].file}`;
         trialAudio.load();
         
         // Set hint based on which note is being modified
-        trialHint.textContent = `💡 Pay attention to the ${task3SelectedTrials[i].notePosition} note (${task3SelectedTrials[i].note})`;
+        trialHint.textContent = `💡 Pay attention to the ${task3SelectedTrials[i + 2].notePosition} note (${task3SelectedTrials[i + 2].note})`;
         
         // Track when trial starts
         let trialStartTime = null;
@@ -591,16 +630,16 @@ function setupTask3Pages() {
             e.preventDefault();
             if (validateForm(trialForm)) {
                 const userResponse = document.querySelector(`input[name="unfamiliarResponse${i}"]:checked`).value;
-                const correctAnswer = task3SelectedTrials[i].correctAnswer;
+                const correctAnswer = task3SelectedTrials[i + 2].correctAnswer;
                 
                 // Save trial data
                 formData.task3Trials.push({
                     trialType: 'test',
                     trialNumber: i,
-                    audioFile: task3SelectedTrials[i].file,
-                    delta: task3SelectedTrials[i].delta,
-                    note: task3SelectedTrials[i].note,
-                    notePosition: task3SelectedTrials[i].notePosition,
+                    audioFile: task3SelectedTrials[i + 2].file,
+                    delta: task3SelectedTrials[i + 2].delta,
+                    note: task3SelectedTrials[i + 2].note,
+                    notePosition: task3SelectedTrials[i + 2].notePosition,
                     correctAnswer: correctAnswer,
                     userResponse: userResponse,
                     correct: userResponse === correctAnswer,
