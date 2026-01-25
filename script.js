@@ -241,11 +241,13 @@ function initializePages() {
 
 function initializeTaskLoaders() {
   // Task 2 practice
-  attachAudioLoader(
-    document.getElementById("audio-task2-practice"),
-    document.querySelector("#page-section2-practice .loader"),
-    task2SelectedTrials
-  );
+    for (let i = 1; i <= 3; i++) {
+    attachAudioLoader(
+        document.getElementById(`audio-task2-practice${i}`),
+        document.querySelector(`#page-section2-practice${i} .loader`),
+        task2SelectedTrials
+    );
+    }
 
   // Task 2 test trials
   for (let i = 1; i <= 6; i++) {
@@ -257,11 +259,13 @@ function initializeTaskLoaders() {
   }
 
   // Task 3 practice
-  attachAudioLoader(
-    document.getElementById("audio-task3-practice"),
-    document.querySelector("#page-section3-practice .loader"),
-    task3SelectedTrials
-  );
+    for (let i = 1; i <= 3; i++) {
+    attachAudioLoader(
+        document.getElementById(`audio-task3-practice${i}`),
+        document.querySelector(`#page-section3-practice${i} .loader`),
+        task3SelectedTrials
+    );
+    }
 
   // Task 3 test trials
   for (let i = 1; i <= 6; i++) {
