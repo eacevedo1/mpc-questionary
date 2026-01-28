@@ -404,6 +404,12 @@ function setupTask1Pages() {
         practiceBtn.addEventListener('click', function(e) {
             e.preventDefault();
             if (validateForm(practiceForm)) {
+                // First click shows feedback; second click advances
+                if (practiceBtn.dataset.feedbackShown === 'true') {
+                    nextPage();
+                    return;
+                }
+                
                 const userResponse = document.querySelector(`input[name="pitchResponsePractice${practiceNum}"]:checked`).value;
                 const correctAnswer = task1SelectedTrials[p].correctAnswer;
                 
@@ -419,7 +425,7 @@ function setupTask1Pages() {
                     feedbackDiv.style.color = '#dc3545';
                 }
                 
-                // Save practice data
+                // Save practice data (only on first click)
                 formData.task1Trials.push({
                     trialType: 'practice',
                     practiceNumber: practiceNum,
@@ -431,12 +437,6 @@ function setupTask1Pages() {
                     startTimestamp: practiceStartTime,
                     responseTimestamp: new Date().toISOString()
                 });
-                
-                // First click shows feedback; second click advances
-                if (practiceBtn.dataset.feedbackShown === 'true') {
-                    nextPage();
-                    return;
-                }
 
                 practiceBtn.dataset.feedbackShown = 'true';
                 practiceBtn.textContent = practiceNum === 3 ? 'Continue to Test Trials' : 'Next Practice';
@@ -522,6 +522,12 @@ function setupTask2Pages() {
         practiceBtn.addEventListener('click', function(e) {
             e.preventDefault();
             if (validateForm(practiceForm)) {
+                // First click shows feedback; second click advances
+                if (practiceBtn.dataset.feedbackShown === 'true') {
+                    nextPage();
+                    return;
+                }
+                
                 const userResponse = document.querySelector(`input[name="melodyResponsePractice${practiceNum}"]:checked`).value;
                 const correctAnswer = task2SelectedTrials[p].correctAnswer;
                 
@@ -537,7 +543,7 @@ function setupTask2Pages() {
                     feedbackDiv.style.color = '#dc3545';
                 }
                 
-                // Save practice data
+                // Save practice data (only on first click)
                 formData.task2Trials.push({
                     trialType: 'practice',
                     practiceNumber: practiceNum,
@@ -551,12 +557,6 @@ function setupTask2Pages() {
                     startTimestamp: practiceStartTime,
                     responseTimestamp: new Date().toISOString()
                 });
-                
-                // First click shows feedback; second click advances
-                if (practiceBtn.dataset.feedbackShown === 'true') {
-                    nextPage();
-                    return;
-                }
 
                 practiceBtn.dataset.feedbackShown = 'true';
                 practiceBtn.textContent = practiceNum === 3 ? 'Continue to Test Trials' : 'Next Practice';
@@ -645,6 +645,12 @@ function setupTask3Pages() {
         practiceBtn.addEventListener('click', function(e) {
             e.preventDefault();
             if (validateForm(practiceForm)) {
+                // First click shows feedback; second click advances
+                if (practiceBtn.dataset.feedbackShown === 'true') {
+                    nextPage();
+                    return;
+                }
+                
                 const userResponse = document.querySelector(`input[name="unfamiliarResponsePractice${practiceNum}"]:checked`).value;
                 const correctAnswer = task3SelectedTrials[p].correctAnswer;
                 
@@ -660,7 +666,7 @@ function setupTask3Pages() {
                     feedbackDiv.style.color = '#dc3545';
                 }
                 
-                // Save practice data
+                // Save practice data (only on first click)
                 formData.task3Trials.push({
                     trialType: 'practice',
                     practiceNumber: practiceNum,
@@ -674,12 +680,6 @@ function setupTask3Pages() {
                     startTimestamp: practiceStartTime,
                     responseTimestamp: new Date().toISOString()
                 });
-                
-                // First click shows feedback; second click advances
-                if (practiceBtn.dataset.feedbackShown === 'true') {
-                    nextPage();
-                    return;
-                }
 
                 practiceBtn.dataset.feedbackShown = 'true';
                 practiceBtn.textContent = practiceNum === 3 ? 'Continue to Test Trials' : 'Next Practice';
