@@ -510,10 +510,15 @@ select:focus {
 .note-indicators span {
   width: 16%;
   text-align: center;
-  font-size: 11px;
+  font-size: 15px;
   color: #9ca3af;
   font-weight: 500;
   box-sizing: border-box;
+}
+
+.note-indicators span.highlight-note {
+  color: #dc3545;
+  font-weight: 700;
 }
 
 /* Responsive Design */

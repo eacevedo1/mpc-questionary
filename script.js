@@ -189,6 +189,24 @@ function attachAudioButtonControl(audioElement, nextBtn) {
   });
 }
 
+// Helper function to highlight the note indicator based on notePosition
+function highlightNoteIndicator(pageId, notePosition) {
+  const page = document.getElementById(pageId);
+  if (!page) return;
+  
+  const noteIndicators = page.querySelector('.note-indicators');
+  if (!noteIndicators) return;
+  
+  const spans = noteIndicators.querySelectorAll('span');
+  spans.forEach(span => span.classList.remove('highlight-note'));
+  
+  // notePosition is '3rd' or '5th', so we need to get the index (2 or 4)
+  const noteIndex = notePosition === '3rd' ? 2 : 4;
+  if (spans[noteIndex]) {
+    spans[noteIndex].classList.add('highlight-note');
+  }
+}
+
 function attachAudioLoader(audioElement, loaderElement, trialArray) {
   if (!audioElement || !loaderElement || !trialArray) return;
 
@@ -569,6 +587,9 @@ function setupTask2Pages() {
             practiceHint.innerHTML = `<strong>Pay attention to the ${task2SelectedTrials[p].notePosition} note (${task2SelectedTrials[p].note})</strong> - "To" in the phrase.`;
         }
         
+        // Highlight the note indicator for this trial
+        highlightNoteIndicator(`page-section2-practice${practiceNum}`, task2SelectedTrials[p].notePosition);
+        
         // Disable next button while audio is playing
         attachAudioButtonControl(practiceAudio, practiceBtn);
 
@@ -642,6 +663,9 @@ function setupTask2Pages() {
         // Set hint based on which note is being modified
         trialHint.textContent = `💡 Pay attention to the ${task2SelectedTrials[i + 2].notePosition} note (${task2SelectedTrials[i + 2].note})`;
         
+        // Highlight the note indicator for this trial
+        highlightNoteIndicator(`page-section2-trial${i}`, task2SelectedTrials[i + 2].notePosition);
+        
         // Disable next button while audio is playing
         attachAudioButtonControl(trialAudio, trialBtn);
         
@@ -697,6 +721,9 @@ function setupTask3Pages() {
         practiceAudio.querySelector('source').src = `data/${practiceFolder}/${task3SelectedTrials[p].file}`;
         practiceAudio.load();
         practiceHint.innerHTML = `<strong>Pay attention to the ${task3SelectedTrials[p].notePosition} note (${task3SelectedTrials[p].note})</strong>`;
+        
+        // Highlight the note indicator for this trial
+        highlightNoteIndicator(`page-section3-practice${practiceNum}`, task3SelectedTrials[p].notePosition);
         
         // Disable next button while audio is playing
         attachAudioButtonControl(practiceAudio, practiceBtn);
@@ -770,6 +797,9 @@ function setupTask3Pages() {
         
         // Set hint based on which note is being modified
         trialHint.textContent = `💡 Pay attention to the ${task3SelectedTrials[i + 2].notePosition} note (${task3SelectedTrials[i + 2].note})`;
+        
+        // Highlight the note indicator for this trial
+        highlightNoteIndicator(`page-section3-trial${i}`, task3SelectedTrials[i + 2].notePosition);
         
         // Disable next button while audio is playing
         attachAudioButtonControl(trialAudio, trialBtn);
