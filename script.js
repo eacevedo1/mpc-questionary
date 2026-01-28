@@ -146,6 +146,22 @@ let pages = [];
 
 // Timing and color configuration for highlighting notes
 
+// Helper function to reset audio to beginning on play
+function attachAudioResetOnPlay(audioElement) {
+  if (!audioElement) return;
+  
+  // Avoid attaching multiple times
+  if (audioElement.dataset.resetOnPlayAttached) return;
+  audioElement.dataset.resetOnPlayAttached = "true";
+  
+  audioElement.addEventListener("play", () => {
+    // Reset to beginning if not already at start
+    if (audioElement.currentTime > 0.1) {
+      audioElement.currentTime = 0;
+    }
+  });
+}
+
 // Helper function to disable next button while audio is playing
 function attachAudioButtonControl(audioElement, nextBtn) {
   if (!audioElement || !nextBtn) return;
@@ -153,6 +169,9 @@ function attachAudioButtonControl(audioElement, nextBtn) {
   // Avoid attaching multiple times
   if (audioElement.dataset.buttonControlAttached) return;
   audioElement.dataset.buttonControlAttached = "true";
+  
+  // Also attach reset on play behavior
+  attachAudioResetOnPlay(audioElement);
   
   audioElement.addEventListener("play", () => {
     nextBtn.disabled = true;
@@ -176,6 +195,9 @@ function attachAudioLoader(audioElement, loaderElement, trialArray) {
   // Avoid attaching multiple times
   if (audioElement.dataset.highlightAttached) return;
   audioElement.dataset.highlightAttached = "true";
+
+  // Also attach reset on play behavior
+  attachAudioResetOnPlay(audioElement);
 
   let onTimeout = null;
   let offTimeout = null;
