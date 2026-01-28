@@ -339,7 +339,7 @@ function setupRandomizedPages() {
     // Duplicate test trials and shuffle
     const duplicatedTask3TestTrials = shuffleArray([...task3TestTrials, ...task3TestTrials]);
     task3SelectedTrials = [...task3PracticeTrials, ...duplicatedTask3TestTrials];
-    
+
     // Store the selected trials for later analysis
     formData.task3AudioFiles = task3SelectedTrials.map(trial => ({
         file: trial.file,
@@ -356,8 +356,14 @@ function setupRandomizedPages() {
         ['page-section3-description', 'page-section3-practice1', 'page-section3-practice2', 'page-section3-practice3', 'page-section3-trial1', 'page-section3-trial2', 'page-section3-trial3', 'page-section3-trial4', 'page-section3-trial5', 'page-section3-trial6', 'page-section3-trial7', 'page-section3-trial8', 'page-section3-trial9', 'page-section3-trial10', 'page-section3-trial11', 'page-section3-trial12']
     ];
     
-    // Keep sections in fixed order
-    const shuffled = randomizedSections; // don't shuffle tasks
+    // Shuffle sections randomly
+    const shuffled = shuffleArray([...randomizedSections]);
+    
+    // Store the section order (extract section numbers: 1, 2, or 3)
+    formData.sectionOrder = shuffled.map(section => {
+        const match = section[0].match(/page-section(\d)/);
+        return match ? `Task ${match[1]}` : 'Unknown';
+    });
 
     // Flatten pages into main pages array
     shuffled.forEach(section => {
