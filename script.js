@@ -145,6 +145,31 @@ let currentPageIndex = 0;
 let pages = [];
 
 // Timing and color configuration for highlighting notes
+
+// Helper function to disable next button while audio is playing
+function attachAudioButtonControl(audioElement, nextBtn) {
+  if (!audioElement || !nextBtn) return;
+  
+  // Avoid attaching multiple times
+  if (audioElement.dataset.buttonControlAttached) return;
+  audioElement.dataset.buttonControlAttached = "true";
+  
+  audioElement.addEventListener("play", () => {
+    nextBtn.disabled = true;
+    nextBtn.classList.add("audio-playing");
+  });
+  
+  audioElement.addEventListener("pause", () => {
+    nextBtn.disabled = false;
+    nextBtn.classList.remove("audio-playing");
+  });
+  
+  audioElement.addEventListener("ended", () => {
+    nextBtn.disabled = false;
+    nextBtn.classList.remove("audio-playing");
+  });
+}
+
 function attachAudioLoader(audioElement, loaderElement, trialArray) {
   if (!audioElement || !loaderElement || !trialArray) return;
 
@@ -398,6 +423,9 @@ function setupTask1Pages() {
         practiceAudio.querySelector('source').src = `data/task1_isolated_tones/${task1SelectedTrials[p].file}`;
         practiceAudio.load();
         
+        // Disable next button while audio is playing
+        attachAudioButtonControl(practiceAudio, practiceBtn);
+        
         // Track when trial starts (when page is shown)
         let practiceStartTime = null;
         const practiceObserver = new MutationObserver(() => {
@@ -461,6 +489,9 @@ function setupTask1Pages() {
         trialAudio.querySelector('source').src = `data/task1_isolated_tones/${task1SelectedTrials[i + 2].file}`;
         trialAudio.load();
         
+        // Disable next button while audio is playing
+        attachAudioButtonControl(trialAudio, trialBtn);
+        
         // Track when trial starts (when page is shown)
         let trialStartTime = null;
         const trialObserver = new MutationObserver(() => {
@@ -515,6 +546,9 @@ function setupTask2Pages() {
         } else {
             practiceHint.innerHTML = `<strong>Pay attention to the ${task2SelectedTrials[p].notePosition} note (${task2SelectedTrials[p].note})</strong> - "To" in the phrase.`;
         }
+        
+        // Disable next button while audio is playing
+        attachAudioButtonControl(practiceAudio, practiceBtn);
 
         // Track when trial starts
         let practiceStartTime = null;
@@ -586,6 +620,9 @@ function setupTask2Pages() {
         // Set hint based on which note is being modified
         trialHint.textContent = `💡 Pay attention to the ${task2SelectedTrials[i + 2].notePosition} note (${task2SelectedTrials[i + 2].note})`;
         
+        // Disable next button while audio is playing
+        attachAudioButtonControl(trialAudio, trialBtn);
+        
         // Track when trial starts
         let trialStartTime = null;
         const trialObserver = new MutationObserver(() => {
@@ -638,6 +675,9 @@ function setupTask3Pages() {
         practiceAudio.querySelector('source').src = `data/${practiceFolder}/${task3SelectedTrials[p].file}`;
         practiceAudio.load();
         practiceHint.innerHTML = `<strong>Pay attention to the ${task3SelectedTrials[p].notePosition} note (${task3SelectedTrials[p].note})</strong>`;
+        
+        // Disable next button while audio is playing
+        attachAudioButtonControl(practiceAudio, practiceBtn);
         
         // Track when trial starts
         let practiceStartTime = null;
@@ -708,6 +748,9 @@ function setupTask3Pages() {
         
         // Set hint based on which note is being modified
         trialHint.textContent = `💡 Pay attention to the ${task3SelectedTrials[i + 2].notePosition} note (${task3SelectedTrials[i + 2].note})`;
+        
+        // Disable next button while audio is playing
+        attachAudioButtonControl(trialAudio, trialBtn);
         
         // Track when trial starts
         let trialStartTime = null;
