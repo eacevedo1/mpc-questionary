@@ -16,39 +16,18 @@
  * K: Section Order
  * L: Task 1 Accuracy
  * 
- * Task 1 Trials (Practice + 6 Test Trials) - 6 columns per trial:
- * M-R: Trial 1 (Practice) - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
- * S-X: Trial 2 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
- * Y-AD: Trial 3 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
- * AE-AJ: Trial 4 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
- * AK-AP: Trial 5 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
- * AQ-AV: Trial 6 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
- * AW-BB: Trial 7 - Audio File, User Response, Correct Answer, Result, Start Time, Response Time
+ * Task 1 Trials (3 Practice + 12 Test Trials) - 6 columns per trial (15 trials total)
  * 
- * BC: Task 2 Accuracy
+ * Task 2 Accuracy
  * 
- * Task 2 Trials (Practice + 6 Test Trials) - 8 columns per trial:
- * BD-BK: Trial 1 (Practice) - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * BL-BS: Trial 2 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * BT-CA: Trial 3 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * CB-CI: Trial 4 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * CJ-CQ: Trial 5 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * CR-CY: Trial 6 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * CZ-DG: Trial 7 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * Task 2 Trials (3 Practice + 12 Test Trials) - 8 columns per trial (15 trials total)
  * 
- * DH: Task 3 Accuracy
+ * Task 3 Accuracy
  * 
- * Task 3 Trials (Practice + 6 Test Trials) - 8 columns per trial:
- * DI-DP: Trial 1 (Practice) - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * DQ-DX: Trial 2 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * DY-EF: Trial 3 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * EG-EN: Trial 4 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * EO-EV: Trial 5 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * EW-FD: Trial 6 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
- * FE-FL: Trial 7 - Audio File, Note, Note Position, User Response, Correct Answer, Result, Start Time, Response Time
+ * Task 3 Trials (3 Practice + 12 Test Trials) - 8 columns per trial (15 trials total)
  * 
- * FM: Feedback
- * FN: Completion Timestamp
+ * Feedback
+ * Completion Timestamp
  */
 
 function doPost(e) {
@@ -83,9 +62,9 @@ function doPost(e) {
       data.task1Accuracy
     ];
     
-    // Add Task 1 trial data (7 trials: 1 practice + 6 test)
+    // Add Task 1 trial data (15 trials: 3 practice + 12 test)
     // For each trial: audioFile, userResponse, correctAnswer, correct, startTime, responseTime
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 15; i++) {
       if (task1Trials[i]) {
         const trial = task1Trials[i];
         row.push(
@@ -105,9 +84,9 @@ function doPost(e) {
     // Add Task 2 accuracy
     row.push(data.task2Accuracy || '');
     
-    // Add Task 2 trial data (7 trials: 1 practice + 6 test)
+    // Add Task 2 trial data (15 trials: 3 practice + 12 test)
     // For each trial: audioFile, note, notePosition, userResponse, correctAnswer, correct, startTime, responseTime
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 15; i++) {
       if (task2Trials[i]) {
         const trial = task2Trials[i];
         row.push(
@@ -129,9 +108,9 @@ function doPost(e) {
     // Add Task 3 accuracy
     row.push(data.task3Accuracy || '');
     
-    // Add Task 3 trial data (7 trials: 1 practice + 6 test)
+    // Add Task 3 trial data (15 trials: 3 practice + 12 test)
     // For each trial: audioFile, note, notePosition, userResponse, correctAnswer, correct, startTime, responseTime
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 15; i++) {
       if (task3Trials[i]) {
         const trial = task3Trials[i];
         row.push(
@@ -197,183 +176,59 @@ function setupHeaders() {
     'Headphones',
     'Section Order',
     'Task 1 Accuracy',
-    // Practice Trial
-    'T1P Audio File',
-    'T1P User Response',
-    'T1P Correct Answer',
-    'T1P Result',
-    'T1P Start Time',
-    'T1P Response Time',
-    // Test Trial 1
-    'T1-1 Audio File',
-    'T1-1 User Response',
-    'T1-1 Correct Answer',
-    'T1-1 Result',
-    'T1-1 Start Time',
-    'T1-1 Response Time',
-    // Test Trial 2
-    'T1-2 Audio File',
-    'T1-2 User Response',
-    'T1-2 Correct Answer',
-    'T1-2 Result',
-    'T1-2 Start Time',
-    'T1-2 Response Time',
-    // Test Trial 3
-    'T1-3 Audio File',
-    'T1-3 User Response',
-    'T1-3 Correct Answer',
-    'T1-3 Result',
-    'T1-3 Start Time',
-    'T1-3 Response Time',
-    // Test Trial 4
-    'T1-4 Audio File',
-    'T1-4 User Response',
-    'T1-4 Correct Answer',
-    'T1-4 Result',
-    'T1-4 Start Time',
-    'T1-4 Response Time',
-    // Test Trial 5
-    'T1-5 Audio File',
-    'T1-5 User Response',
-    'T1-5 Correct Answer',
-    'T1-5 Result',
-    'T1-5 Start Time',
-    'T1-5 Response Time',
-    // Test Trial 6
-    'T1-6 Audio File',
-    'T1-6 User Response',
-    'T1-6 Correct Answer',
-    'T1-6 Result',
-    'T1-6 Start Time',
-    'T1-6 Response Time',
+    // Task 1 Practice Trials (3)
+    'T1P1 Audio File', 'T1P1 User Response', 'T1P1 Correct Answer', 'T1P1 Result', 'T1P1 Start Time', 'T1P1 Response Time',
+    'T1P2 Audio File', 'T1P2 User Response', 'T1P2 Correct Answer', 'T1P2 Result', 'T1P2 Start Time', 'T1P2 Response Time',
+    'T1P3 Audio File', 'T1P3 User Response', 'T1P3 Correct Answer', 'T1P3 Result', 'T1P3 Start Time', 'T1P3 Response Time',
+    // Task 1 Test Trials (12)
+    'T1-1 Audio File', 'T1-1 User Response', 'T1-1 Correct Answer', 'T1-1 Result', 'T1-1 Start Time', 'T1-1 Response Time',
+    'T1-2 Audio File', 'T1-2 User Response', 'T1-2 Correct Answer', 'T1-2 Result', 'T1-2 Start Time', 'T1-2 Response Time',
+    'T1-3 Audio File', 'T1-3 User Response', 'T1-3 Correct Answer', 'T1-3 Result', 'T1-3 Start Time', 'T1-3 Response Time',
+    'T1-4 Audio File', 'T1-4 User Response', 'T1-4 Correct Answer', 'T1-4 Result', 'T1-4 Start Time', 'T1-4 Response Time',
+    'T1-5 Audio File', 'T1-5 User Response', 'T1-5 Correct Answer', 'T1-5 Result', 'T1-5 Start Time', 'T1-5 Response Time',
+    'T1-6 Audio File', 'T1-6 User Response', 'T1-6 Correct Answer', 'T1-6 Result', 'T1-6 Start Time', 'T1-6 Response Time',
+    'T1-7 Audio File', 'T1-7 User Response', 'T1-7 Correct Answer', 'T1-7 Result', 'T1-7 Start Time', 'T1-7 Response Time',
+    'T1-8 Audio File', 'T1-8 User Response', 'T1-8 Correct Answer', 'T1-8 Result', 'T1-8 Start Time', 'T1-8 Response Time',
+    'T1-9 Audio File', 'T1-9 User Response', 'T1-9 Correct Answer', 'T1-9 Result', 'T1-9 Start Time', 'T1-9 Response Time',
+    'T1-10 Audio File', 'T1-10 User Response', 'T1-10 Correct Answer', 'T1-10 Result', 'T1-10 Start Time', 'T1-10 Response Time',
+    'T1-11 Audio File', 'T1-11 User Response', 'T1-11 Correct Answer', 'T1-11 Result', 'T1-11 Start Time', 'T1-11 Response Time',
+    'T1-12 Audio File', 'T1-12 User Response', 'T1-12 Correct Answer', 'T1-12 Result', 'T1-12 Start Time', 'T1-12 Response Time',
     'Task 2 Accuracy',
-    // Task 2 Practice Trial
-    'T2P Audio File',
-    'T2P Note',
-    'T2P Note Position',
-    'T2P User Response',
-    'T2P Correct Answer',
-    'T2P Result',
-    'T2P Start Time',
-    'T2P Response Time',
-    // Task 2 Test Trial 1
-    'T2-1 Audio File',
-    'T2-1 Note',
-    'T2-1 Note Position',
-    'T2-1 User Response',
-    'T2-1 Correct Answer',
-    'T2-1 Result',
-    'T2-1 Start Time',
-    'T2-1 Response Time',
-    // Task 2 Test Trial 2
-    'T2-2 Audio File',
-    'T2-2 Note',
-    'T2-2 Note Position',
-    'T2-2 User Response',
-    'T2-2 Correct Answer',
-    'T2-2 Result',
-    'T2-2 Start Time',
-    'T2-2 Response Time',
-    // Task 2 Test Trial 3
-    'T2-3 Audio File',
-    'T2-3 Note',
-    'T2-3 Note Position',
-    'T2-3 User Response',
-    'T2-3 Correct Answer',
-    'T2-3 Result',
-    'T2-3 Start Time',
-    'T2-3 Response Time',
-    // Task 2 Test Trial 4
-    'T2-4 Audio File',
-    'T2-4 Note',
-    'T2-4 Note Position',
-    'T2-4 User Response',
-    'T2-4 Correct Answer',
-    'T2-4 Result',
-    'T2-4 Start Time',
-    'T2-4 Response Time',
-    // Task 2 Test Trial 5
-    'T2-5 Audio File',
-    'T2-5 Note',
-    'T2-5 Note Position',
-    'T2-5 User Response',
-    'T2-5 Correct Answer',
-    'T2-5 Result',
-    'T2-5 Start Time',
-    'T2-5 Response Time',
-    // Task 2 Test Trial 6
-    'T2-6 Audio File',
-    'T2-6 Note',
-    'T2-6 Note Position',
-    'T2-6 User Response',
-    'T2-6 Correct Answer',
-    'T2-6 Result',
-    'T2-6 Start Time',
-    'T2-6 Response Time',
+    // Task 2 Practice Trials (3)
+    'T2P1 Audio File', 'T2P1 Note', 'T2P1 Note Position', 'T2P1 User Response', 'T2P1 Correct Answer', 'T2P1 Result', 'T2P1 Start Time', 'T2P1 Response Time',
+    'T2P2 Audio File', 'T2P2 Note', 'T2P2 Note Position', 'T2P2 User Response', 'T2P2 Correct Answer', 'T2P2 Result', 'T2P2 Start Time', 'T2P2 Response Time',
+    'T2P3 Audio File', 'T2P3 Note', 'T2P3 Note Position', 'T2P3 User Response', 'T2P3 Correct Answer', 'T2P3 Result', 'T2P3 Start Time', 'T2P3 Response Time',
+    // Task 2 Test Trials (12)
+    'T2-1 Audio File', 'T2-1 Note', 'T2-1 Note Position', 'T2-1 User Response', 'T2-1 Correct Answer', 'T2-1 Result', 'T2-1 Start Time', 'T2-1 Response Time',
+    'T2-2 Audio File', 'T2-2 Note', 'T2-2 Note Position', 'T2-2 User Response', 'T2-2 Correct Answer', 'T2-2 Result', 'T2-2 Start Time', 'T2-2 Response Time',
+    'T2-3 Audio File', 'T2-3 Note', 'T2-3 Note Position', 'T2-3 User Response', 'T2-3 Correct Answer', 'T2-3 Result', 'T2-3 Start Time', 'T2-3 Response Time',
+    'T2-4 Audio File', 'T2-4 Note', 'T2-4 Note Position', 'T2-4 User Response', 'T2-4 Correct Answer', 'T2-4 Result', 'T2-4 Start Time', 'T2-4 Response Time',
+    'T2-5 Audio File', 'T2-5 Note', 'T2-5 Note Position', 'T2-5 User Response', 'T2-5 Correct Answer', 'T2-5 Result', 'T2-5 Start Time', 'T2-5 Response Time',
+    'T2-6 Audio File', 'T2-6 Note', 'T2-6 Note Position', 'T2-6 User Response', 'T2-6 Correct Answer', 'T2-6 Result', 'T2-6 Start Time', 'T2-6 Response Time',
+    'T2-7 Audio File', 'T2-7 Note', 'T2-7 Note Position', 'T2-7 User Response', 'T2-7 Correct Answer', 'T2-7 Result', 'T2-7 Start Time', 'T2-7 Response Time',
+    'T2-8 Audio File', 'T2-8 Note', 'T2-8 Note Position', 'T2-8 User Response', 'T2-8 Correct Answer', 'T2-8 Result', 'T2-8 Start Time', 'T2-8 Response Time',
+    'T2-9 Audio File', 'T2-9 Note', 'T2-9 Note Position', 'T2-9 User Response', 'T2-9 Correct Answer', 'T2-9 Result', 'T2-9 Start Time', 'T2-9 Response Time',
+    'T2-10 Audio File', 'T2-10 Note', 'T2-10 Note Position', 'T2-10 User Response', 'T2-10 Correct Answer', 'T2-10 Result', 'T2-10 Start Time', 'T2-10 Response Time',
+    'T2-11 Audio File', 'T2-11 Note', 'T2-11 Note Position', 'T2-11 User Response', 'T2-11 Correct Answer', 'T2-11 Result', 'T2-11 Start Time', 'T2-11 Response Time',
+    'T2-12 Audio File', 'T2-12 Note', 'T2-12 Note Position', 'T2-12 User Response', 'T2-12 Correct Answer', 'T2-12 Result', 'T2-12 Start Time', 'T2-12 Response Time',
     'Task 3 Accuracy',
-    // Task 3 Practice Trial
-    'T3P Audio File',
-    'T3P Note',
-    'T3P Note Position',
-    'T3P User Response',
-    'T3P Correct Answer',
-    'T3P Result',
-    'T3P Start Time',
-    'T3P Response Time',
-    // Task 3 Test Trial 1
-    'T3-1 Audio File',
-    'T3-1 Note',
-    'T3-1 Note Position',
-    'T3-1 User Response',
-    'T3-1 Correct Answer',
-    'T3-1 Result',
-    'T3-1 Start Time',
-    'T3-1 Response Time',
-    // Task 3 Test Trial 2
-    'T3-2 Audio File',
-    'T3-2 Note',
-    'T3-2 Note Position',
-    'T3-2 User Response',
-    'T3-2 Correct Answer',
-    'T3-2 Result',
-    'T3-2 Start Time',
-    'T3-2 Response Time',
-    // Task 3 Test Trial 3
-    'T3-3 Audio File',
-    'T3-3 Note',
-    'T3-3 Note Position',
-    'T3-3 User Response',
-    'T3-3 Correct Answer',
-    'T3-3 Result',
-    'T3-3 Start Time',
-    'T3-3 Response Time',
-    // Task 3 Test Trial 4
-    'T3-4 Audio File',
-    'T3-4 Note',
-    'T3-4 Note Position',
-    'T3-4 User Response',
-    'T3-4 Correct Answer',
-    'T3-4 Result',
-    'T3-4 Start Time',
-    'T3-4 Response Time',
-    // Task 3 Test Trial 5
-    'T3-5 Audio File',
-    'T3-5 Note',
-    'T3-5 Note Position',
-    'T3-5 User Response',
-    'T3-5 Correct Answer',
-    'T3-5 Result',
-    'T3-5 Start Time',
-    'T3-5 Response Time',
-    // Task 3 Test Trial 6
-    'T3-6 Audio File',
-    'T3-6 Note',
-    'T3-6 Note Position',
-    'T3-6 User Response',
-    'T3-6 Correct Answer',
-    'T3-6 Result',
-    'T3-6 Start Time',
-    'T3-6 Response Time',
+    // Task 3 Practice Trials (3)
+    'T3P1 Audio File', 'T3P1 Note', 'T3P1 Note Position', 'T3P1 User Response', 'T3P1 Correct Answer', 'T3P1 Result', 'T3P1 Start Time', 'T3P1 Response Time',
+    'T3P2 Audio File', 'T3P2 Note', 'T3P2 Note Position', 'T3P2 User Response', 'T3P2 Correct Answer', 'T3P2 Result', 'T3P2 Start Time', 'T3P2 Response Time',
+    'T3P3 Audio File', 'T3P3 Note', 'T3P3 Note Position', 'T3P3 User Response', 'T3P3 Correct Answer', 'T3P3 Result', 'T3P3 Start Time', 'T3P3 Response Time',
+    // Task 3 Test Trials (12)
+    'T3-1 Audio File', 'T3-1 Note', 'T3-1 Note Position', 'T3-1 User Response', 'T3-1 Correct Answer', 'T3-1 Result', 'T3-1 Start Time', 'T3-1 Response Time',
+    'T3-2 Audio File', 'T3-2 Note', 'T3-2 Note Position', 'T3-2 User Response', 'T3-2 Correct Answer', 'T3-2 Result', 'T3-2 Start Time', 'T3-2 Response Time',
+    'T3-3 Audio File', 'T3-3 Note', 'T3-3 Note Position', 'T3-3 User Response', 'T3-3 Correct Answer', 'T3-3 Result', 'T3-3 Start Time', 'T3-3 Response Time',
+    'T3-4 Audio File', 'T3-4 Note', 'T3-4 Note Position', 'T3-4 User Response', 'T3-4 Correct Answer', 'T3-4 Result', 'T3-4 Start Time', 'T3-4 Response Time',
+    'T3-5 Audio File', 'T3-5 Note', 'T3-5 Note Position', 'T3-5 User Response', 'T3-5 Correct Answer', 'T3-5 Result', 'T3-5 Start Time', 'T3-5 Response Time',
+    'T3-6 Audio File', 'T3-6 Note', 'T3-6 Note Position', 'T3-6 User Response', 'T3-6 Correct Answer', 'T3-6 Result', 'T3-6 Start Time', 'T3-6 Response Time',
+    'T3-7 Audio File', 'T3-7 Note', 'T3-7 Note Position', 'T3-7 User Response', 'T3-7 Correct Answer', 'T3-7 Result', 'T3-7 Start Time', 'T3-7 Response Time',
+    'T3-8 Audio File', 'T3-8 Note', 'T3-8 Note Position', 'T3-8 User Response', 'T3-8 Correct Answer', 'T3-8 Result', 'T3-8 Start Time', 'T3-8 Response Time',
+    'T3-9 Audio File', 'T3-9 Note', 'T3-9 Note Position', 'T3-9 User Response', 'T3-9 Correct Answer', 'T3-9 Result', 'T3-9 Start Time', 'T3-9 Response Time',
+    'T3-10 Audio File', 'T3-10 Note', 'T3-10 Note Position', 'T3-10 User Response', 'T3-10 Correct Answer', 'T3-10 Result', 'T3-10 Start Time', 'T3-10 Response Time',
+    'T3-11 Audio File', 'T3-11 Note', 'T3-11 Note Position', 'T3-11 User Response', 'T3-11 Correct Answer', 'T3-11 Result', 'T3-11 Start Time', 'T3-11 Response Time',
+    'T3-12 Audio File', 'T3-12 Note', 'T3-12 Note Position', 'T3-12 User Response', 'T3-12 Correct Answer', 'T3-12 Result', 'T3-12 Start Time', 'T3-12 Response Time',
     'Feedback',
     'Completion Timestamp'
   ];

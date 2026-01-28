@@ -249,8 +249,8 @@ function initializeTaskLoaders() {
     );
     }
 
-  // Task 2 test trials
-  for (let i = 1; i <= 6; i++) {
+  // Task 2 test trials (12 trials)
+  for (let i = 1; i <= 12; i++) {
     attachAudioLoader(
       document.getElementById(`audio-task2-trial${i}`),
       document.querySelector(`#page-section2-trial${i} .loader`),
@@ -267,8 +267,8 @@ function initializeTaskLoaders() {
     );
     }
 
-  // Task 3 test trials
-  for (let i = 1; i <= 6; i++) {
+  // Task 3 test trials (12 trials)
+  for (let i = 1; i <= 12; i++) {
     attachAudioLoader(
       document.getElementById(`audio-task3-trial${i}`),
       document.querySelector(`#page-section3-trial${i} .loader`),
@@ -281,7 +281,7 @@ function initializeTaskLoaders() {
 document.addEventListener("DOMContentLoaded", initializeTaskLoaders);
 
 function setupRandomizedPages() {
-    // Select 9 random audio files for Task 1 (3 practice + 6 test trials)
+    // Select 9 random audio files for Task 1 (3 practice + 6 unique test samples, each repeated twice = 12 test trials)
     const shuffledAudio = shuffleArray([...task1AudioFiles]);
     const selectedTask1 = shuffledAudio.slice(0, 9);
     
@@ -290,7 +290,9 @@ function setupRandomizedPages() {
         Math.abs(b.delta) - Math.abs(a.delta)
     );
     const testTrials = selectedTask1.slice(3, 9);
-    task1SelectedTrials = [...practiceTrials, ...testTrials];
+    // Duplicate test trials and shuffle
+    const duplicatedTestTrials = shuffleArray([...testTrials, ...testTrials]);
+    task1SelectedTrials = [...practiceTrials, ...duplicatedTestTrials];
     
     // Store the selected trials for later analysis
     formData.task1AudioFiles = task1SelectedTrials.map(trial => ({
@@ -299,7 +301,7 @@ function setupRandomizedPages() {
         correctAnswer: trial.correctAnswer
     }));
     
-    // Select 9 random audio files for Task 2 (3 practice + 6 test trials)
+    // Select 9 random audio files for Task 2 (3 practice + 6 unique test samples, each repeated twice = 12 test trials)
     // Mix D4 and F4 alterations randomly
     const allTask2Files = [...task2AudioFilesD4, ...task2AudioFilesF4];
     const shuffledTask2Audio = shuffleArray(allTask2Files);
@@ -310,7 +312,9 @@ function setupRandomizedPages() {
         Math.abs(b.delta) - Math.abs(a.delta)
     );
     const task2TestTrials = selectedTask2.slice(3, 9);
-    task2SelectedTrials = [...task2PracticeTrials, ...task2TestTrials];
+    // Duplicate test trials and shuffle
+    const duplicatedTask2TestTrials = shuffleArray([...task2TestTrials, ...task2TestTrials]);
+    task2SelectedTrials = [...task2PracticeTrials, ...duplicatedTask2TestTrials];
     
     // Store the selected trials for later analysis
     formData.task2AudioFiles = task2SelectedTrials.map(trial => ({
@@ -321,7 +325,7 @@ function setupRandomizedPages() {
         notePosition: trial.notePosition
     }));
     
-    // Select 9 random audio files for Task 3 (3 practice + 6 test trials)
+    // Select 9 random audio files for Task 3 (3 practice + 6 unique test samples, each repeated twice = 12 test trials)
     // Mix D4 and F4 alterations randomly
     const allTask3Files = [...task3AudioFilesD4, ...task3AudioFilesF4];
     const shuffledTask3Audio = shuffleArray(allTask3Files);
@@ -332,7 +336,9 @@ function setupRandomizedPages() {
         Math.abs(b.delta) - Math.abs(a.delta)
     );
     const task3TestTrials = selectedTask3.slice(3, 9);
-    task3SelectedTrials = [...task3PracticeTrials, ...task3TestTrials];
+    // Duplicate test trials and shuffle
+    const duplicatedTask3TestTrials = shuffleArray([...task3TestTrials, ...task3TestTrials]);
+    task3SelectedTrials = [...task3PracticeTrials, ...duplicatedTask3TestTrials];
     
     // Store the selected trials for later analysis
     formData.task3AudioFiles = task3SelectedTrials.map(trial => ({
@@ -343,11 +349,11 @@ function setupRandomizedPages() {
         notePosition: trial.notePosition
     }));
     
-    // Get all randomized section pages (now each section has description + 3 practice + 6 test trials)
+    // Get all randomized section pages (now each section has description + 3 practice + 12 test trials)
     const randomizedSections = [
-        ['page-section1-description', 'page-section1-practice1', 'page-section1-practice2', 'page-section1-practice3', 'page-section1-trial1', 'page-section1-trial2', 'page-section1-trial3', 'page-section1-trial4', 'page-section1-trial5', 'page-section1-trial6'],
-        ['page-section2-description', 'page-section2-practice1', 'page-section2-practice2', 'page-section2-practice3', 'page-section2-trial1', 'page-section2-trial2', 'page-section2-trial3', 'page-section2-trial4', 'page-section2-trial5', 'page-section2-trial6'],
-        ['page-section3-description', 'page-section3-practice1', 'page-section3-practice2', 'page-section3-practice3', 'page-section3-trial1', 'page-section3-trial2', 'page-section3-trial3', 'page-section3-trial4', 'page-section3-trial5', 'page-section3-trial6']
+        ['page-section1-description', 'page-section1-practice1', 'page-section1-practice2', 'page-section1-practice3', 'page-section1-trial1', 'page-section1-trial2', 'page-section1-trial3', 'page-section1-trial4', 'page-section1-trial5', 'page-section1-trial6', 'page-section1-trial7', 'page-section1-trial8', 'page-section1-trial9', 'page-section1-trial10', 'page-section1-trial11', 'page-section1-trial12'],
+        ['page-section2-description', 'page-section2-practice1', 'page-section2-practice2', 'page-section2-practice3', 'page-section2-trial1', 'page-section2-trial2', 'page-section2-trial3', 'page-section2-trial4', 'page-section2-trial5', 'page-section2-trial6', 'page-section2-trial7', 'page-section2-trial8', 'page-section2-trial9', 'page-section2-trial10', 'page-section2-trial11', 'page-section2-trial12'],
+        ['page-section3-description', 'page-section3-practice1', 'page-section3-practice2', 'page-section3-practice3', 'page-section3-trial1', 'page-section3-trial2', 'page-section3-trial3', 'page-section3-trial4', 'page-section3-trial5', 'page-section3-trial6', 'page-section3-trial7', 'page-section3-trial8', 'page-section3-trial9', 'page-section3-trial10', 'page-section3-trial11', 'page-section3-trial12']
     ];
     
     // Keep sections in fixed order
@@ -438,8 +444,8 @@ function setupTask1Pages() {
         });
     }
     
-    // Setup test trials
-    for (let i = 1; i <= 6; i++) {
+    // Setup test trials (12 trials)
+    for (let i = 1; i <= 12; i++) {
         const trialPage = document.getElementById(`page-section1-trial${i}`);
         const trialForm = document.getElementById(`section1Trial${i}Form`);
         const trialBtn = trialForm.querySelector('.next-btn');
@@ -558,8 +564,8 @@ function setupTask2Pages() {
         });
     }
     
-    // Setup test trials
-    for (let i = 1; i <= 6; i++) {
+    // Setup test trials (12 trials)
+    for (let i = 1; i <= 12; i++) {
         const trialPage = document.getElementById(`page-section2-trial${i}`);
         const trialForm = document.getElementById(`section2Trial${i}Form`);
         const trialBtn = trialForm.querySelector('.next-btn');
@@ -681,8 +687,8 @@ function setupTask3Pages() {
         });
     }
     
-    // Setup test trials
-    for (let i = 1; i <= 6; i++) {
+    // Setup test trials (12 trials)
+    for (let i = 1; i <= 12; i++) {
         const trialPage = document.getElementById(`page-section3-trial${i}`);
         const trialForm = document.getElementById(`section3Trial${i}Form`);
         const trialBtn = trialForm.querySelector('.next-btn');
